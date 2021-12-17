@@ -44,7 +44,6 @@ steps:
   - git push origin ${DRONE_BRANCH}
   - git push --tags origin ${DRONE_BRANCH}
 
-steps:
 - name: npm-publish-main
   image: plugins/npm
   settings:

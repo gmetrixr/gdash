@@ -1,5 +1,5 @@
 {
-  "name": "@gmetrivr/gdash",
+  "name": "@gmetrixr/gdash",
   "version": "1.0.0.",
   "description": "A GMetri Client (web) utility library",
   "main": "./lib/cjs/index.js",
