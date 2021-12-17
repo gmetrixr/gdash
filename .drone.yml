@@ -24,10 +24,10 @@ steps:
   - pnpm test
 
 #Commits all modified files. npm publish doesn't work with unstaged changes
-- name: npm-prepare-master
+- name: npm-prepare-main
   image: gmetrixr/baseimage:node-16-dev-v1
   when:
-    branch: [master]
+    branch: [main]
     event:
       exclude: [pull_request]
   commands:
@@ -45,17 +45,17 @@ steps:
   - git push --tags origin ${DRONE_BRANCH}
 
 steps:
-- name: npm-publish-master
+- name: npm-publish-main
   image: plugins/npm
   settings:
     email: sahil@gmetri.com
     token: 
       from_secret: npm_token
 
-# - name: on-conflict-master
+# - name: on-conflict-main
 #   image: gmetrixr/baseimage:node-16-dev-v1
 #   when:
-#     branch: [master]
+#     branch: [main]
 #     status: [failure]
 #     event:
 #       exclude: [pull_request]
@@ -69,6 +69,6 @@ steps:
 #   - git push --tags origin ${DRONE_BRANCH}
   
 trigger:
-  branch: [master]
+  branch: [main]
   event: [push, pull_request]
 
