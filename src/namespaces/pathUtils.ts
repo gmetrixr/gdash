@@ -1,7 +1,7 @@
 
 const imageFormats = ["png", "jpg", "jpeg", "webp"];
 const videoFormats = ["mp4", "m4v"];
-const audioFormats = ["aac", "mp3", "weba"];
+const audioFormats = ["aac", "mp3", "weba", "mpeg"];
 const threeDFormats = ["glb", "gltf"];
 const compressedFormats = ["zip", "rar", "tar", "gzip", "gz", "bz2", "7z"];
 const gifFormats = ["gif"];
@@ -12,7 +12,7 @@ export const disallowedFileExtensions = ["php", "php3", "php4", "phtml", "pl", "
 export const allowedMimeTypes = {
   IMAGE: ["image/png", "image/jpg", "image/jpeg", "image/webp"],
   VIDEO: ["video/mp4", "video/mpeg", "video/x-m4v"],
-  AUDIO: ["audio/aac", "audio/mp3"],
+  AUDIO: ["audio/aac", "audio/mp3", "audio/mpeg"],
   COMPRESSED: ["application/zip", "application/vnd.rar", "application/x-tar", "application/gzip", "application/x-bzip2", "application/x-7z-compressed"],
   THREED: ["model/gltf+binary", "model/gltf+json"],
   GIF: ["image/gif"],
