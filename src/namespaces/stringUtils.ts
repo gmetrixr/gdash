@@ -14,7 +14,7 @@ export const generateAWSFileName = (fileName: string): string => {
 export const regexStrings = {
   email: {
     regex: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
-    errorMessage: "Email format is not valid",
+    errorMessage: "Email format is not valid", 
   },
   password: {
     strongStrength: new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"), //8 chars, smallChar + capChar + number + specialChar
