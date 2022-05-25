@@ -46,6 +46,10 @@ steps:
 
 - name: npm-publish-main
   image: plugins/npm
+  when:
+    branch: [main]
+    event:
+      exclude: [pull_request]
   settings:
     email: sahil@gmetri.com
     token: 
