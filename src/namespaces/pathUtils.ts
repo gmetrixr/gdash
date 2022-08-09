@@ -1,5 +1,5 @@
 
-const imageFormats = ["png", "jpg", "jpeg", "webp", "jfif", "tiff"];
+const imageFormats = ["png", "jpg", "jpeg", "webp", "jfif"];
 const videoFormats = ["mp4", "m4v"];
 const audioFormats = ["aac", "mp3", "weba", "mpeg"];
 const threeDFormats = ["glb", "gltf"];
@@ -10,7 +10,7 @@ export const extensionWhitelist = [...imageFormats, ...videoFormats, ...audioFor
 export const disallowedFileExtensions = ["php", "php3", "php4", "phtml", "pl", "py", "jsp", "asp", "htm", "shtml", "sh", "cg"];
 
 export const allowedMimeTypes = {
-  IMAGE: ["image/png", "image/jpg", "image/jpeg", "image/webp", "image/jfif", "image/tiff"],
+  IMAGE: ["image/png", "image/jpg", "image/jpeg", "image/webp", "image/jfif"],
   VIDEO: ["video/mp4", "video/mpeg", "video/x-m4v"],
   AUDIO: ["audio/aac", "audio/mp3", "audio/mpeg"],
   COMPRESSED: ["application/zip", "application/vnd.rar", "application/x-tar", "application/gzip", "application/x-bzip2", "application/x-7z-compressed"],
