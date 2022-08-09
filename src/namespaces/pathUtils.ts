@@ -1,5 +1,5 @@
 
-const imageFormats = ["png", "jpg", "jpeg", "webp"];
+const imageFormats = ["png", "jpg", "jpeg", "webp", "jfif", "tiff"];
 const videoFormats = ["mp4", "m4v"];
 const audioFormats = ["aac", "mp3", "weba", "mpeg"];
 const threeDFormats = ["glb", "gltf"];
