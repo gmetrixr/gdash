@@ -6,7 +6,8 @@ const threeDFormats = ["glb", "gltf"];
 const compressedFormats = ["zip", "rar", "tar", "gzip", "gz", "bz2", "7z"];
 const gifFormats = ["gif"];
 const pdfFormats = ["pdf"];
-export const extensionWhitelist = [...imageFormats, ...videoFormats, ...audioFormats, ...threeDFormats, ...compressedFormats, ...gifFormats, ...pdfFormats];
+const hdriFormats = ["hdr", "hdri"];
+export const extensionWhitelist = [...imageFormats, ...videoFormats, ...audioFormats, ...threeDFormats, ...compressedFormats, ...gifFormats, ...pdfFormats, ...hdriFormats];
 export const disallowedFileExtensions = ["php", "php3", "php4", "phtml", "pl", "py", "jsp", "asp", "htm", "shtml", "sh", "cg"];
 
 export const allowedMimeTypes = {
@@ -20,6 +21,7 @@ export const allowedMimeTypes = {
   PDF: ["application/pdf"],
   SPRITE: ["application/zip", "application/vnd.rar", "application/x-tar", "application/gzip", "application/x-bzip2", "application/x-7z-compressed"],
   SCORM: ["application/zip", "application/vnd.rar", "application/x-tar", "application/gzip", "application/x-bzip2", "application/x-7z-compressed"],
+  HDR: [""],
 };
 
 export enum FileType {
@@ -33,6 +35,7 @@ export enum FileType {
   SCORM = "SCORM",
   SPRITE = "SPRITE",
   OTHER = "OTHER",
+  HDR = "HDR",
 }
 
 export const getFileType = (path: string): FileType => {
@@ -51,6 +54,8 @@ export const getFileType = (path: string): FileType => {
     return FileType.GIF;
   } else if (pdfFormats.includes(extension)) {
     return FileType.PDF;
+  } else if (hdriFormats.includes(extension)) {
+    return FileType.HDR;
   } else {
     return FileType.OTHER;
   }
