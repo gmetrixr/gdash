@@ -85,6 +85,36 @@ export const getSafeName = (originalName: string, existingNames: string[]): stri
   return `${seriesBase} (${maxInSeries + 1})`;
 };
 
+export const getSafeSlug = (originalName: string, existingNames: string[]): string => {
+  const nameSeriesExtractorRegex = {
+    // *? makes the first part not greedy
+    // (?:xxxx)? in the second part after the base makes the second part optional
+    // used to match patterns like Hello_123
+    regex: /^(.*?)(?:\_(\d+))?$/,
+    errorMessage: "no name series found"
+  }
+
+  if (!existingNames.includes(originalName)) {
+    return originalName;
+  }
+
+  const res = nameSeriesExtractorRegex.regex.exec(originalName);
+  const seriesBase = res?.[1] ?? originalName;
+  const sameSeriesInExistingNames = existingNames.filter(u => u.startsWith(seriesBase)); //filter existingNames
+  
+  const series = sameSeriesInExistingNames.map(currName => {
+    const matchedGroups = nameSeriesExtractorRegex.regex.exec(currName);
+    return parseInt(matchedGroups?.[2] ?? "0");
+  });
+
+  let maxInSeries = series.reduce((a, b) => a >= b ? a : b);
+  if (maxInSeries === undefined) {
+    maxInSeries = 0;
+  }
+
+  return `${seriesBase}_${maxInSeries + 1}`;
+};
+
 /**
  * Problem: In getSafeName, file extensions aren't considered.
  * So: image.png's safe name becomes "image.png (1)" - but it should have become "image (1).png"
