@@ -5,7 +5,7 @@ const { deepCloneRfdc, deepCloneStringify } = jsUtils;
 import { performance } from "perf_hooks";
 
 describe("uuid Test", () => {
-  
+
   it("should see if string created by uuid is of a certain length", () => {
     const id = jsUtils.generateRandomUUID();
     expect(id.length).to.eq(36);
@@ -74,3 +74,38 @@ describe("uuid Test", () => {
     expect(templatedName).to.eq("lorem ipsum dolor");
   });
 });
+
+describe("safe slug test", () => {
+
+  it("should see if getSafeSlug works test 1", () => {
+    try {
+      const res = jsUtils.getSafeSlug("xyz", ["abc", "abc_(2)", "abc (3)"]);
+    }
+    catch (e) {
+      expect((e as any).code).to.eq("ERR_ASSERTION");
+    }
+  });
+
+  it("should see if getSafeSlug works test 1", () => {
+    const res = jsUtils.getSafeSlug("abc", ["abc_2", "abc_1", "xyc"]);
+    expect(res).to.eq("abc");
+  });
+
+  it("should see if getSafeSlug works test 2", () => {
+    const res = jsUtils.getSafeSlug("abc", ["abc", "abc_1", "abc_2_1", "abc_2_2", "abc_3"]);
+    expect(res).to.eq("abc_4");
+  });
+
+  it("should see if getSafeSlug works test 3", () => {
+    const res = jsUtils.getSafeSlug("abc_2", ["abc", "abc_2", "abc_3"]);
+    expect(res).to.eq("abc_4");
+  });
+
+  it("should see if getSafeSlug works test 4", () => {
+    const res = jsUtils.getSafeSlug("360_york_castle_museum034 Panorama_Custom", [
+      "360_york_castle_museum034 Panorama_Custom",
+      "360_york_castle_museum034 Panorama_Custom_1"
+    ]);
+    expect(res).to.eq("360_york_castle_museum034 Panorama_Custom_2");
+  });
+})
