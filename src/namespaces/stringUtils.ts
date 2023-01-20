@@ -193,6 +193,10 @@ export const safeNameRegexL1 = /[a-zA-Z0-9-_.'()\s,+\[\]:*&<>~]/g;
 export const safeNameRegexL2 = /[a-zA-Z0-9-_.'()\s,]/g;
 export const safeNameRegexL3 = /[a-zA-Z0-9_-]/g;
 
+// L4 will be use to check orgSlug and Deployment slug only, allowed : aplanumeric, -(dash) , _ (underscore)
+// Not allowed any other special character
+export const safeNameRegexL4 = /^([a-zA-Z0-9 _-]+)$/g;
+
 /**
  * Least strict, used for project/scene/element names
  * @param name
