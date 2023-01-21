@@ -83,5 +83,16 @@ describe("stringUtils test", () => {
     ]);
     expect(uniqueName).to.be.eq("This is-a_big___string_ _that  don't _vork (5)");
   });
+
+  it("should check for safeNameRegexL4", () => {
+    const validOrgSlug = "gmetri";
+    const invalidOrgSlug = ".gmetri"
+    const validDeploymentSlug = "my_metaverse_-2"
+    const invalidDeploymentSlug = ".env"
+    expect(stringUtils.safeNameRegexL4.test(validOrgSlug)).to.be.eq(true)
+    expect(stringUtils.safeNameRegexL4.test(invalidOrgSlug)).to.be.eq(false)
+    expect(stringUtils.safeNameRegexL4.test(validDeploymentSlug)).to.be.eq(true)
+    expect(stringUtils.safeNameRegexL4.test(invalidDeploymentSlug)).to.be.eq(false)
+  });
 });
   
