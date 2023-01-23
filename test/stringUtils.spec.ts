@@ -89,10 +89,12 @@ describe("stringUtils test", () => {
     const invalidOrgSlug = ".gmetri"
     const validDeploymentSlug = "my_metaverse_-2"
     const invalidDeploymentSlug = ".env"
+    const invalidDeploymentSlug2 = "env."
     expect(stringUtils.safeNameRegexL4.test(validOrgSlug)).to.be.eq(true)
     expect(stringUtils.safeNameRegexL4.test(invalidOrgSlug)).to.be.eq(false)
     expect(stringUtils.safeNameRegexL4.test(validDeploymentSlug)).to.be.eq(true)
     expect(stringUtils.safeNameRegexL4.test(invalidDeploymentSlug)).to.be.eq(false)
+    expect(stringUtils.safeNameRegexL4.test(invalidDeploymentSlug2)).to.be.eq(false)
   });
 });
   
