@@ -47,9 +47,9 @@ steps:
 - name: npm-publish-main
   image: plugins/npm
   when:
-    branch: [main]
+    branch: [ main ]
     event:
-      exclude: [pull_request]
+      exclude: [ pull_request ]
   settings:
     email: sahil@gmetri.com
     token: 
@@ -70,7 +70,7 @@ steps:
 #   - "git commit -am \"trigger: $N [no skip]\""
 #   - git push origin ${DRONE_BRANCH}
 #   - git push --tags origin ${DRONE_BRANCH}
-  
+
 trigger:
   branch: [main]
   event: [push, pull_request]
