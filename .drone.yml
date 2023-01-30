@@ -52,6 +52,8 @@ steps:
       exclude: [ pull_request ]
   settings:
     username:
+      from_secret: npm_email
+    username:
       from_secret: npm_user
     password: 
       from_secret: npm_token
