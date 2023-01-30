@@ -51,8 +51,9 @@ steps:
     event:
       exclude: [ pull_request ]
   settings:
-    email: sahil@gmetri.com
-    token: 
+    username:
+      from_secret: npm_user
+    password: 
       from_secret: npm_token
 
 # - name: on-conflict-main
