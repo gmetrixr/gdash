@@ -45,15 +45,15 @@ steps:
   - git push --tags origin ${DRONE_BRANCH}
 
 - name: npm-publish-main
-    image: gmetrixr/baseimage:node-16-dev-v1
-    environment:
-      REGISTRY_TOKEN:
-        from_secret: npm_token
-    commands:
-      - npm set registry https://registry.npmjs.org/
-      - npm set //registry.npmjs.org/:_authToken $REGISTRY_TOKEN
-      - npm config set always-auth true
-      - npm publish
+  image: gmetrixr/baseimage:node-16-dev-v1
+  environment:
+    REGISTRY_TOKEN:
+      from_secret: npm_token
+  commands:
+    - npm set registry https://registry.npmjs.org/
+    - npm set //registry.npmjs.org/:_authToken $REGISTRY_TOKEN
+    - npm config set always-auth true
+    - npm publish
 
 # - name: on-conflict-main
 #   image: gmetrixr/baseimage:node-16-dev-v1
