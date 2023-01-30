@@ -20,8 +20,8 @@ steps:
   commands:
   - pnpm lint
   - pnpm check
-  - pnpm build
   - pnpm test
+  - pnpm build
 
 #Commits all modified files. npm publish doesn't work with unstaged changes
 - name: npm-prepare-main
