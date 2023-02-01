@@ -193,9 +193,16 @@ export const safeNameRegexL1 = /[a-zA-Z0-9-_.'()\s,+\[\]:*&<>~]/g;
 export const safeNameRegexL2 = /[a-zA-Z0-9-_.'()\s,]/g;
 export const safeNameRegexL3 = /[a-zA-Z0-9_-]/g;
 
-// L4 will be use to check orgSlug and Deployment slug only, allowed : aplanumeric, -(dash) , _ (underscore)
-// Not allowed any other special character
-export const safeNameRegexL4 = /^([a-zA-Z0-9 _-]+)$/g;
+/**
+ * Save RegExps that use to .test() strings as strings. 
+ * Saving them as RegExp in a central library is risky as RegExp themselves are stateful
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test
+ * 
+ * To use: new RegExp(safeNameRegexL3CheckString, "g").test(testString);
+ * 
+ * The below is used for checking orgSlugs and depSlugs created using L3
+ */
+export const safeNameRegexL3CheckString = "^([a-zA-Z0-9_-]+)$"; // /^([a-zA-Z0-9_-]+)$/g;
 
 /**
  * Least strict, used for project/scene/element names
