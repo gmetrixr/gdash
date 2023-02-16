@@ -56,7 +56,6 @@ steps:
   commands:
     - npm set registry https://registry.npmjs.org/
     - npm set //registry.npmjs.org/:_authToken $REGISTRY_TOKEN
-    - npm config set always-auth true
     - npm publish
 
 # - name: on-conflict-main
