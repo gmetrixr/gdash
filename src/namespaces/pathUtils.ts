@@ -36,7 +36,7 @@ export enum FileType {
   SPRITE = "SPRITE",
   OTHER = "OTHER",
   HDR = "HDR",
-  RPMCHAR = "RPMCHAR"
+  CHARACTER_RPM = "CHARACTER_RPM"
 }
 
 export const getFileType = (path: string): FileType => {
