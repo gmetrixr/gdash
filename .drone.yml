@@ -46,6 +46,10 @@ steps:
 
 - name: npm-publish-main
   image: gmetrixr/baseimage:node-18-dev-v1
+  when:
+    branch: [main]
+    event:
+      exclude: [pull_request]
   environment:
     REGISTRY_TOKEN:
       from_secret: npm_token
