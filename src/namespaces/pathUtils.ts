@@ -10,20 +10,6 @@ const hdriFormats = ["hdr", "hdri"];
 export const extensionWhitelist = [...imageFormats, ...videoFormats, ...audioFormats, ...threeDFormats, ...compressedFormats, ...gifFormats, ...pdfFormats, ...hdriFormats];
 export const disallowedFileExtensions = ["php", "php3", "php4", "phtml", "pl", "py", "jsp", "asp", "htm", "shtml", "sh", "cg"];
 
-export const allowedMimeTypes = {
-  IMAGE: ["image/png", "image/jpg", "image/jpeg", "image/webp", "image/jfif"],
-  VIDEO: ["video/mp4", "video/mpeg", "video/x-m4v"],
-  AUDIO: ["audio/aac", "audio/mp3", "audio/mpeg"],
-  COMPRESSED: ["application/zip", "application/vnd.rar", "application/x-tar", "application/gzip", "application/x-bzip2", "application/x-7z-compressed"],
-  THREED: ["model/gltf+binary", "model/gltf+json"],
-  GIF: ["image/gif"],
-  OTHER: ["application/pdf"],
-  PDF: ["application/pdf"],
-  SPRITE: ["application/zip", "application/vnd.rar", "application/x-tar", "application/gzip", "application/x-bzip2", "application/x-7z-compressed"],
-  SCORM: ["application/zip", "application/vnd.rar", "application/x-tar", "application/gzip", "application/x-bzip2", "application/x-7z-compressed"],
-  HDR: [""],
-};
-
 export enum FileType {
   IMAGE = "IMAGE",
   GIF = "GIF",
@@ -38,6 +24,21 @@ export enum FileType {
   HDR = "HDR",
   CHARACTER_RPM = "CHARACTER_RPM"
 }
+
+export const allowedMimeTypes: Record<FileType, string[]> = {
+  [FileType.IMAGE]: ["image/png", "image/jpg", "image/jpeg", "image/webp", "image/jfif"],
+  [FileType.VIDEO]: ["video/mp4", "video/mpeg", "video/x-m4v"],
+  [FileType.AUDIO]: ["audio/aac", "audio/mp3", "audio/mpeg"],
+  [FileType.COMPRESSED]: ["application/zip", "application/vnd.rar", "application/x-tar", "application/gzip", "application/x-bzip2", "application/x-7z-compressed"],
+  [FileType.THREED]: ["model/gltf+binary", "model/gltf+json"],
+  [FileType.GIF]: ["image/gif"],
+  [FileType.OTHER]: ["application/pdf"],
+  [FileType.PDF]: ["application/pdf"],
+  [FileType.SPRITE]: ["application/zip", "application/vnd.rar", "application/x-tar", "application/gzip", "application/x-bzip2", "application/x-7z-compressed"],
+  [FileType.SCORM]: ["application/zip", "application/vnd.rar", "application/x-tar", "application/gzip", "application/x-bzip2", "application/x-7z-compressed"],
+  [FileType.HDR]: [""],
+  [FileType.CHARACTER_RPM]: [""],
+};
 
 export const getFileType = (path: string): FileType => {
   const extension = getExtension(path);
