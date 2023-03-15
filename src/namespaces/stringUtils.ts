@@ -153,7 +153,7 @@ export const isURLValid = (url: string): boolean => {
  * \v — Vertical tabulator
  * @param name
  */
-export function escape(name: string) {
+export function escape(name: string): string {
   return name
     .replace(/[\b]/g, `\\b`)
     .replace(/[\f]/g, `\\f`)
@@ -163,8 +163,11 @@ export function escape(name: string) {
     .replace(/[\v]/g, `\\v`);
 }
 
-// make the name string safe to use.
-function makeNameSafe(name = "", regex: RegExp) {
+/*
+ * Make the name string safe to use.
+ * Replaces all characters that are not a part of the regex with _
+ */
+function makeNameSafe(name = "", regex: RegExp): string {
   name = escape(name);
   // * First find the unsafe characters from the string - returns an array of unsafe characters (including consequtive chars) ex: ["*&^", "+", "<>"]
   // * taken from here: https://stackoverflow.com/a/20541853
@@ -189,9 +192,9 @@ function makeNameSafe(name = "", regex: RegExp) {
  */
 
 // safe name set according to: https://docs.google.com/document/d/18vQN_rS2zasDKUZ_efwXhxKEukLKRCRoQVqn8tv8g8A/edit#
-export const safeNameRegexL1 = /[a-zA-Z0-9-_.'()\s,+\[\]:*&<>~]/g;
-export const safeNameRegexL2 = /[a-zA-Z0-9-_.'()\s,]/g;
-export const safeNameRegexL3 = /[a-zA-Z0-9_-]/g;
+export const safeNameRegexL1 = /[a-zA-Z0-9-_.'()\s,+\[\]:*&<>~]/g; //Project / scene name
+export const safeNameRegexL2 = /[a-zA-Z0-9-_.'()\s,]/g; //Used for file/folder names + variable names
+export const safeNameRegexL3 = /[a-zA-Z0-9_-]/g; //Most strict, used for slugs
 
 /**
  * Save RegExps that use to .test() strings as strings. 
@@ -206,38 +209,49 @@ export const safeNameRegexL3CheckString = "^([a-zA-Z0-9_-]+)$"; // /^([a-zA-Z0-9
 
 /**
  * Least strict, used for project/scene/element names
- * @param name
  */
-export function makeNameSafeL1(name: string) {
+export function makeNameSafeL1(name: string): string {
   return makeNameSafe(name.trim(), safeNameRegexL1);
 }
 
 /**
  * Medium strict, used for file/folder names + variable names
- * @param name
  */
-export function makeNameSafeL2(name: string) {
+export function makeNameSafeL2(name: string): string {
   return makeNameSafe(name.trim(), safeNameRegexL2);
 }
 
 /**
  * Most strict, used for slugs
- * @param name
  */
-export function makeNameSafeL3(name: string) {
+export function makeNameSafeL3(name: string): string {
   return makeNameSafe(name.trim(), safeNameRegexL3);
 }
 
-const nameSeriesExtractorRegex = {
-  // *? makes the first part not greedy
-  // (?:xxxx)? in the second part after the base makes the second part optional
-  // used to match patterns like Hello (123)
-  regex: /^(.*?)(?:\s\((\d+)\))?$/,
-  errorMessage: "no name series found"
-};
 
-export function makeNameUnique(originalName: string, existingNames: string[]) {
-  if (!existingNames.includes(originalName)) {
+
+/**
+ * nameToDuplicate, existingnames -> output
+ * abc, [abc, abc (3), xyc] -> abc (4)
+ * abc (2), [abc, abc (2), abc (2) (1), abc (2) (2), abc (3)] -> abc (4)
+ * abc_(2), [abc, abc_(2), abc (3)] -> abc_(2) (1)
+ *
+ * if(existingNames.includes(name)) {
+ *  name = getNonDuplicateName(name, existingNames);
+ * }
+ * 
+ * This fn doesn't ensure only safe characters are use. For that, use makeNameSafeLx.
+ */
+export const getNonDuplicateName = (originalName: string, existingNames: string[]): string => {
+  const nameSeriesExtractorRegex = {
+    // *? makes the first part not greedy
+    // (?:xxxx)? in the second part after the base makes the second part optional
+    // used to match patterns like Hello (123)
+    regex: /^(.*?)(?:\s\((\d+)\))?$/, //space allowed
+    errorMessage: "no name series found"
+  }
+  
+  if(!existingNames.includes(originalName)) {
     return originalName;
   }
   const res = nameSeriesExtractorRegex.regex.exec(originalName);
@@ -248,8 +262,83 @@ export function makeNameUnique(originalName: string, existingNames: string[]) {
     return parseInt(matchedGroups?.[2] ?? "0");
   });
   let maxInSeries = series.reduce((a, b) => a >= b ? a : b);
-  if (maxInSeries === undefined) {
+  if(maxInSeries === undefined) {
     maxInSeries = 0;
   }
   return `${seriesBase} (${maxInSeries + 1})`;
+};
+
+/**
+ * nameToDuplicate, existingnames -> output
+ *
+ * if(existingSlugs.includes(name)) {
+ *  name = getNonDuplicateSlug(slug, existingSlugs);
+ * }
+ * 
+ * This fn doesn't ensure only safe characters are use. For that, use makeNameSafeLx.
+ */
+export const getNonDuplicateSlug = (originalName: string, existingNames: string[]): string => {
+  const nameSeriesExtractorRegex = {
+    // *? makes the first part not greedy
+    // (?:xxxx)? in the second part after the base makes the second part optional
+    // used to match patterns like Hello_123
+    regex: /^(.*?)(?:\_(\d+))?$/, //No space (\s) allowed 
+    errorMessage: "no name series found"
+  }
+
+  if (!existingNames.includes(originalName)) {
+    return originalName;
+  }
+
+  const res = nameSeriesExtractorRegex.regex.exec(originalName);
+  const seriesBase = res?.[1] ?? originalName;
+  const sameSeriesInExistingNames = existingNames.filter(u => u.startsWith(seriesBase)); //filter existingNames
+  
+  const series = sameSeriesInExistingNames.map(currName => {
+    const matchedGroups = nameSeriesExtractorRegex.regex.exec(currName);
+    return parseInt(matchedGroups?.[2] ?? "0");
+  });
+
+  let maxInSeries = series.reduce((a, b) => a >= b ? a : b);
+  if (maxInSeries === undefined) {
+    maxInSeries = 0;
+  }
+
+  return `${seriesBase}_${maxInSeries + 1}`;
+};
+
+/**
+ * Problem: In getNonDuplicateName, file extensions aren't considered.
+ * So: image.png's safe name becomes "image.png (1)" - but it should have become "image (1).png"
+ * 
+ * Simple algorithm:
+ * 1) Extract extension from originalName. (say .abc)
+ * 2) Remove ".abc" from existing names if found
+ * 3) Call getNonDuplicateName
+ * 4) Add ".abc" back to the returned name from step 3.
+ * 
+ * This fn doesn't ensure only safe characters are use. For that, use makeNameSafeLx.
+ */
+export const getNonDuplicateNameForFilename = (originalName: string, existingNames: string[]): string => {
+  //"image.png".split(".") returns ["image", "png"]
+  const splitName = originalName.split(".");
+  const ext = splitName[splitName.length - 1];
+  if(splitName.length < 2 || splitName[0] === "" || ext === undefined) { //i.e. no extension found OR it's a hidden file like .htaccess
+    return getNonDuplicateName(originalName, existingNames);
+  } else {
+    const extLen = ext.length;
+    const originalNameWithoutExt = splitName.slice(0, -1).join("."); //extension was "pop'ed" out, so this is the name without extension
+    const existingNamesWithoutExt = [];
+    for (const en of existingNames) {
+      const enExt = en.substring(en.length - extLen, en.length);
+      if(enExt === ext) {
+        const enWithoutExt = en.split(".").slice(0, -1).join(".");
+        existingNamesWithoutExt.push(enWithoutExt);
+      } else {
+        existingNamesWithoutExt.push(en);
+      }
+    }
+    const safeNameWithoutExt = getNonDuplicateName(originalNameWithoutExt, existingNamesWithoutExt);
+    return `${safeNameWithoutExt}.${ext}`;
+  }
 }
