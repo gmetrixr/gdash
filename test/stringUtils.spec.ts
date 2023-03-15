@@ -57,16 +57,16 @@ describe("stringUtils test", () => {
   });
 
   it("should correct unique names", () => {
-    const res1 = stringUtils.makeNameUnique("abc", ["abc", "abc (3)", "xyc"]);
+    const res1 = stringUtils.getUniqueName("abc", ["abc", "abc (3)", "xyc"]);
     expect(res1).to.eq("abc (4)");
 
-    const res2 = stringUtils.makeNameUnique("abc", ["abc", "abc (2)", "abc (2) (1)", "abc (2) (2)", "abc (3)"]);
+    const res2 = stringUtils.getUniqueName("abc", ["abc", "abc (2)", "abc (2) (1)", "abc (2) (2)", "abc (3)"]);
     expect(res2).to.eq("abc (4)");
 
-    const res3 = stringUtils.makeNameUnique("abc_(2)", ["abc", "abc_(2)", "abc (3)"]);
+    const res3 = stringUtils.getUniqueName("abc_(2)", ["abc", "abc_(2)", "abc (3)"]);
     expect(res3).to.eq("abc_(2) (1)");
 
-    const res4 = stringUtils.makeNameUnique("360_york_castle_museum034 Panorama (Custom)", [
+    const res4 = stringUtils.getUniqueName("360_york_castle_museum034 Panorama (Custom)", [
       "360_york_castle_museum034 Panorama (Custom)",
       "360_york_castle_museum034 Panorama (Custom) (1)",
     ]);
@@ -76,7 +76,7 @@ describe("stringUtils test", () => {
   it("should make a safe unique name for file", () => {
     const unsafeName = "This is-a{big}_[string] \that \n don't \vork";
     const safeName = stringUtils.makeNameSafeL2(unsafeName);
-    const uniqueName = stringUtils.makeNameUnique(safeName, [
+    const uniqueName = stringUtils.getUniqueName(safeName, [
       "This is-a_big___string_ _that  don't _vork",
       "This is-a_big___string_ _that  don't _vork (1)",
       "This is-a_big___string_ _that  don't _vork (4)",
@@ -98,3 +98,77 @@ describe("stringUtils test", () => {
   });
 });
   
+describe("unique slug test", () => {
+
+  it("should see if getUniqueSlug works test 1", () => {
+    try {
+      const res = stringUtils.getUniqueSlug("xyz", ["abc", "abc_(2)", "abc (3)"]);
+    }
+    catch (e) {
+      expect((e as any).code).to.eq("ERR_ASSERTION");
+    }
+  });
+
+  it("should see if getUniqueSlug works test 1", () => {
+    const res = stringUtils.getUniqueSlug("abc", ["abc_2", "abc_1", "xyc"]);
+    expect(res).to.eq("abc");
+  });
+
+  it("should see if getUniqueSlug works test 2", () => {
+    const res = stringUtils.getUniqueSlug("abc", ["abc", "abc_1", "abc_2_1", "abc_2_2", "abc_3"]);
+    expect(res).to.eq("abc_4");
+  });
+
+  it("should see if getUniqueSlug works test 3", () => {
+    const res = stringUtils.getUniqueSlug("abc_2", ["abc", "abc_2", "abc_3"]);
+    expect(res).to.eq("abc_4");
+  });
+
+  it("should see if getUniqueSlug works test 4", () => {
+    const res = stringUtils.getUniqueSlug("360_york_castle_museum034 Panorama_Custom", [
+      "360_york_castle_museum034 Panorama_Custom",
+      "360_york_castle_museum034 Panorama_Custom_1"
+    ]);
+    expect(res).to.eq("360_york_castle_museum034 Panorama_Custom_2");
+  });
+})
+
+describe("unique name test", () => {
+
+  it("should see if getUniqueName works test 1", () => {
+    try {
+      const res = stringUtils.getUniqueName("xyz", ["abc", "abc_(2)", "abc (3)"]);
+    }
+    catch (e) {
+      expect((e as any).code).to.eq("ERR_ASSERTION");
+    }
+  })
+
+  it("should see if getUniqueName works test 1", () => {
+    const res = stringUtils.getUniqueName("abc", ["abc", "abc (3)", "xyc"]);
+    expect(res).to.eq("abc (4)");
+  })
+
+  it("should see if getUniqueName works test 2", () => {
+    const res = stringUtils.getUniqueName("abc", ["abc", "abc (2)", "abc (2) (1)", "abc (2) (2)", "abc (3)"]);
+    expect(res).to.eq("abc (4)");
+  })
+
+  it("should see if getUniqueName works test 3", () => {
+    const res = stringUtils.getUniqueName("abc_(2)", ["abc", "abc_(2)", "abc (3)"]);
+    expect(res).to.eq("abc_(2) (1)");
+  })
+
+  it("should see if getUniqueName works test 4", () => {
+    const res = stringUtils.getUniqueName("360_york_castle_museum034 Panorama (Custom)", [
+      "360_york_castle_museum034 Panorama (Custom)",
+      "360_york_castle_museum034 Panorama (Custom) (1)"
+    ]);
+    expect(res).to.eq("360_york_castle_museum034 Panorama (Custom) (2)");
+  })
+
+  it("should see if getUniqueNameForFilename works test 1", () => {
+    const res = stringUtils.getUniqueNameForFilename("abc.png", ["abc.png", "abc (3).png", "xyc.png"]);
+    expect(res).to.eq("abc (4).png");
+  })
+});

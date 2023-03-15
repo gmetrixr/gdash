@@ -237,12 +237,12 @@ export function makeNameSafeL3(name: string): string {
  * abc_(2), [abc, abc_(2), abc (3)] -> abc_(2) (1)
  *
  * if(existingNames.includes(name)) {
- *  name = getNonDuplicateName(name, existingNames);
+ *  name = getUniqueName(name, existingNames);
  * }
  * 
  * This fn doesn't ensure only safe characters are use. For that, use makeNameSafeLx.
  */
-export const getNonDuplicateName = (originalName: string, existingNames: string[]): string => {
+export const getUniqueName = (originalName: string, existingNames: string[]): string => {
   const nameSeriesExtractorRegex = {
     // *? makes the first part not greedy
     // (?:xxxx)? in the second part after the base makes the second part optional
@@ -272,12 +272,12 @@ export const getNonDuplicateName = (originalName: string, existingNames: string[
  * nameToDuplicate, existingnames -> output
  *
  * if(existingSlugs.includes(name)) {
- *  name = getNonDuplicateSlug(slug, existingSlugs);
+ *  name = getUniqueSlug(slug, existingSlugs);
  * }
  * 
  * This fn doesn't ensure only safe characters are use. For that, use makeNameSafeLx.
  */
-export const getNonDuplicateSlug = (originalName: string, existingNames: string[]): string => {
+export const getUniqueSlug = (originalName: string, existingNames: string[]): string => {
   const nameSeriesExtractorRegex = {
     // *? makes the first part not greedy
     // (?:xxxx)? in the second part after the base makes the second part optional
@@ -308,23 +308,23 @@ export const getNonDuplicateSlug = (originalName: string, existingNames: string[
 };
 
 /**
- * Problem: In getNonDuplicateName, file extensions aren't considered.
+ * Problem: In getUniqueName, file extensions aren't considered.
  * So: image.png's safe name becomes "image.png (1)" - but it should have become "image (1).png"
  * 
  * Simple algorithm:
  * 1) Extract extension from originalName. (say .abc)
  * 2) Remove ".abc" from existing names if found
- * 3) Call getNonDuplicateName
+ * 3) Call getUniqueName
  * 4) Add ".abc" back to the returned name from step 3.
  * 
  * This fn doesn't ensure only safe characters are use. For that, use makeNameSafeLx.
  */
-export const getNonDuplicateNameForFilename = (originalName: string, existingNames: string[]): string => {
+export const getUniqueNameForFilename = (originalName: string, existingNames: string[]): string => {
   //"image.png".split(".") returns ["image", "png"]
   const splitName = originalName.split(".");
   const ext = splitName[splitName.length - 1];
   if(splitName.length < 2 || splitName[0] === "" || ext === undefined) { //i.e. no extension found OR it's a hidden file like .htaccess
-    return getNonDuplicateName(originalName, existingNames);
+    return getUniqueName(originalName, existingNames);
   } else {
     const extLen = ext.length;
     const originalNameWithoutExt = splitName.slice(0, -1).join("."); //extension was "pop'ed" out, so this is the name without extension
@@ -338,7 +338,60 @@ export const getNonDuplicateNameForFilename = (originalName: string, existingNam
         existingNamesWithoutExt.push(en);
       }
     }
-    const safeNameWithoutExt = getNonDuplicateName(originalNameWithoutExt, existingNamesWithoutExt);
+    const safeNameWithoutExt = getUniqueName(originalNameWithoutExt, existingNamesWithoutExt);
     return `${safeNameWithoutExt}.${ext}`;
   }
+}
+
+const deploymentSlugBlacklist = ["test"];
+const organizationCNameBlacklist = ["vr", "metaverse", "test"];
+
+/**
+ * 1. Ensures only safe characters are used
+ * 2. Ensures duplicate names are used
+ * 3. Ensures blacklisted names are removed
+ */
+export const getSafeAndUniqueDeploymentSlug = (originalName: string, existingNames: string[]): string => {
+  const safeOriginalName = makeNameSafeL3(originalName);
+  const existingNameWithBlacklist = [...existingNames, ...deploymentSlugBlacklist];
+  return getUniqueSlug(safeOriginalName, existingNameWithBlacklist);
+}
+
+/**
+ * 1. Ensures only safe characters are used
+ * 2. Ensures duplicate names are used
+ * 3. Ensures blacklisted names are removed
+ */
+export const getSafeAndUniqueOrgCName = (originalName: string, existingNames: string[]): string => {
+  const safeOriginalName = makeNameSafeL3(originalName);
+  const existingNameWithBlacklist = [...existingNames, ...organizationCNameBlacklist];
+  return getUniqueSlug(safeOriginalName, existingNameWithBlacklist);
+}
+
+
+/**
+ * 1. Ensures only safe characters are used
+ * 2. Ensures duplicate names are used
+ */
+export const getSafeAndUniqueProjectName = (originalName: string, existingNames: string[]): string => {
+  const safeOriginalName = makeNameSafeL1(originalName);
+  return getUniqueName(safeOriginalName, existingNames);
+}
+
+/**
+ * 1. Ensures only safe characters are used
+ * 2. Ensures duplicate names are used
+ */
+export const getSafeAndUniqueFileName = (originalName: string, existingNames: string[]): string => {
+  const safeOriginalName = makeNameSafeL2(originalName);
+  return getUniqueNameForFilename(safeOriginalName, existingNames);
+}
+
+/**
+ * 1. Ensures only safe characters are used
+ * 2. Ensures duplicate names are used
+ */
+export const getSafeAndUniqueRecordName = (originalName: string, existingNames: string[]): string => {
+  const safeOriginalName = makeNameSafeL1(originalName);
+  return getUniqueName(safeOriginalName, existingNames);
 }
