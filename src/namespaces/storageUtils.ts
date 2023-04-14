@@ -1,9 +1,9 @@
 import Cookies from "js-cookie";
 
-export const permanentCookieOptionsBrowser = (jwtExpiryMinutes: number) => {
+export const permanentCookieOptionsBrowser = (jwtExpiryMinutes: number): { expires: number, sameSite: 'strict' | 'Strict' | 'lax' | 'Lax' | 'none' | 'None' } => {
   //Expire cookie 1 minute before the token expires
   const expiry_in_days = (jwtExpiryMinutes - 1)/(60*24);
-  return { expires: expiry_in_days };
+  return { expires: expiry_in_days, sameSite: "lax" };
 };
 
 /*
