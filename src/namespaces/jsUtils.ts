@@ -51,13 +51,24 @@ export const mapToObject = <T>(map: Map<T, unknown>): unknown => {
 
 /**
  * Date.now() gives an output like 1602018008290 (13 digits)
- * The list three digits represent milliseconds.
+ * The last three digits represent milliseconds.
  * Overlaps using a simple Date.now() happen when two ids generated in the same millisecond.
  * So, add a random value.
  * IF we add (Math.random() * 1000), 3 random digits get added and chances of overlap reduce to 1 in 1000
  * IF we add (Math.random() * 1000000). 6 random digits get added and chances of overlap reduce to 1 in 10^6
  */
 export const generateId = (): number => Math.floor(Date.now() + (Math.random() * 1000000));
+
+/**
+ * JS integers (without period) are accurate upto 15 digits
+ * So generateIdV2 returns a 15 digit integer
+ * Math.random() returns a random number between 0 (inclusive),  and 1 (exclusive)
+ * the output is 0.xxxx (16 decimal places)
+ * So Math.random() * 0.9e16 is a max of 899... 15 integer digits, 1 decimal digit.
+ * Adding 0.1e16 ensures the first digit isn't 0. Math.floor removes the decimal digit.
+ * So, we are guranteed a 15 digit integer between 1^15 (inclusive) and 1^16 (exclusive)
+ */
+export const generateIdV2 = (): number => Math.floor(Math.random() * 0.9e16 + 0.1e16);
 
 /**
  * Set operations, from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set
