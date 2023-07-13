@@ -395,3 +395,16 @@ export const getSafeAndUniqueRecordName = (originalName: string, existingNames: 
   const safeOriginalName = makeNameSafeL1(originalName);
   return getUniqueName(safeOriginalName, existingNames);
 }
+
+export const getRandomAvatarName = (): string => {
+  const randomAdjective = getRandomFromArray(SAFE_ADJECTIVES);
+  const randomAnimal = getRandomFromArray(SAFE_ANIMALS);
+  return `${randomAdjective} ${randomAnimal}`;
+}
+
+const SAFE_ADJECTIVES = ["Friendly", "Brave", "Clever", "Playful", "Cheerful", "Gentle", "Kind", "Energetic", "Wise", "Curious", "Loyal", "Joyful", "Polite", "Calm", "Caring", "Honest", "Imaginative", "Patient", "Reliable", "Sincere", "Trustworthy", "Generous", "Grateful", "Optimistic", "Respectful", "Supportive", "Thoughtful", "Warm", "Humble", "Creative", ];
+const SAFE_ANIMALS = ["Lion", "Tiger", "Giraffe", "Zebra", "Dolphin", "Penguin", "Koala", "Owl", "Panda", "Fox", "Rabbit", "Turtle", "Kangaroo", "Bear", "Deer", "Wolf", "Horse", "Swan", "Squirrel", "Peacock", "Cheetah", "Hedgehog", "Dolphin", "Otter", "Flamingo", "Octopus", "Camel", "Shark", "Eagle", "Orangutan", "Gorilla", "Platypus", "Parrot", "Lobster", "Alligator", "Ostrich", "Armadillo", "Meerkat", "Hyena", "Seahorse", "Toucan", "Walrus", "Llama", ];
+
+function getRandomFromArray <T>(list: Array<T>): T {
+  return list[Math.floor(Math.random() * list.length)];
+}
