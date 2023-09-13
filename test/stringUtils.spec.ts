@@ -102,10 +102,10 @@ describe("unique slug test", () => {
 
   it("should see if getUniqueSlug works test 1", () => {
     try {
-      const res = stringUtils.getUniqueSlug("xyz", ["abc", "abc_(2)", "abc (3)"]);
+      const _res = stringUtils.getUniqueSlug("xyz", ["abc", "abc_(2)", "abc (3)"]);
     }
     catch (e) {
-      expect((e as any).code).to.eq("ERR_ASSERTION");
+      expect((e as Record<string, unknown>).code).to.eq("ERR_ASSERTION");
     }
   });
 
@@ -140,7 +140,7 @@ describe("unique name test", () => {
       const res = stringUtils.getUniqueName("xyz", ["abc", "abc_(2)", "abc (3)"]);
     }
     catch (e) {
-      expect((e as any).code).to.eq("ERR_ASSERTION");
+      expect((e as Record<string, unknown>).code).to.eq("ERR_ASSERTION");
     }
   })
 

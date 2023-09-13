@@ -99,6 +99,7 @@ export class Config {
   private getInitialValue(propertyLabel: PropertyLabel, propertyDefaults?: PropertyObject): PropertyValue {
     let value: PropertyValue;
     if(this.isWindow) { //Don't allow reading propertyDefaults or process.env in case we are inWindow
+      /* eslint-disable @typescript-eslint/no-explicit-any */
       if((<any>window).windowConfig && propertyLabel in (<any>window).windowConfig) {
         value = (<any>window).windowConfig[propertyLabel];
       }

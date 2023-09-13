@@ -127,7 +127,7 @@ export const getQueryParam = ({ url, key }: { url: string, key: string }): strin
 
 export const getAllQueryParams = ({ url }: { url: string }): Record<string, unknown> => {
   const urlObj = new URL(url);
-  const queryParams: any = {};
+  const queryParams: Record<string, unknown> = {};
   urlObj.searchParams.forEach((value, key) => {
     queryParams[key] = value;
   });
