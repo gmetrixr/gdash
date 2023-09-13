@@ -2,23 +2,23 @@ import * as wt from "worker-timers";
 
 export const useWorkerThreadForTimer = false;
 
-const globalSetInterval = setInterval;
-const globalClearInterval = clearInterval;
-const globalSetTimeout = setTimeout;
-const globalClearTimout = clearTimeout;
-
-export function setInterval(func: Function, timeout: number): number {
-  return (useWorkerThreadForTimer ? wt.setInterval(func, timeout) : globalSetInterval(func, timeout));
+function newSetInterval(func: Function, timeout: number): number {
+  return (useWorkerThreadForTimer ? wt.setInterval(func, timeout) : setInterval(func, timeout));
 }
 
-export function clearInterval(timerId: number): void {
-  return (useWorkerThreadForTimer ? wt.clearInterval(timerId) : globalClearInterval(timerId));
+function newClearInterval(timerId: number): void {
+  return (useWorkerThreadForTimer ? wt.clearInterval(timerId) : clearInterval(timerId));
 }
 
-export function setTimeout(func: Function, delay: number): number {
-  return (useWorkerThreadForTimer ? wt.setTimeout(func, delay) : globalSetTimeout(func, delay));
+function newSetTimeout(func: Function, delay: number): number {
+  return (useWorkerThreadForTimer ? wt.setTimeout(func, delay) : setTimeout(func, delay));
 }
 
-export function clearTimeout(timerId: number): void {
-  return (useWorkerThreadForTimer ? wt.clearTimeout(timerId) : globalClearTimout(timerId));
+function newClearTimeout(timerId: number): void {
+  return (useWorkerThreadForTimer ? wt.clearTimeout(timerId) : clearTimeout(timerId));
 }
+
+export { newSetInterval as setInterval }
+export { newClearInterval as clearInterval }
+export { newSetTimeout as setTimeout }
+export { newClearTimeout as clearTimeout }
