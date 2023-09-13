@@ -12,7 +12,7 @@ export function setInterval(func: Function, timeout: number): number {
 }
 
 export function clearInterval(timerId: number): void {
-  useWorkerThreadForTimer ? wt.clearInterval(timerId) : globalClearInterval(timerId);
+  return (useWorkerThreadForTimer ? wt.clearInterval(timerId) : globalClearInterval(timerId));
 }
 
 export function setTimeout(func: Function, delay: number): number {
@@ -20,5 +20,5 @@ export function setTimeout(func: Function, delay: number): number {
 }
 
 export function clearTimeout(timerId: number): void {
-  useWorkerThreadForTimer ? wt.clearTimeout(timerId) : globalClearTimout(timerId);
+  return (useWorkerThreadForTimer ? wt.clearTimeout(timerId) : globalClearTimout(timerId));
 }
