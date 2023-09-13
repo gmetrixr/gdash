@@ -1,6 +1,7 @@
 import * as wt from "worker-timers";
 
-export const useWorkerThreadForTimer = false;
+/*eslint prefer-const: "off"*/
+export let useWorkerThreadForTimer = false;
 
 function newSetInterval(func: Function, timeout: number): number {
   return (useWorkerThreadForTimer ? wt.setInterval(func, timeout) : setInterval(func, timeout));
