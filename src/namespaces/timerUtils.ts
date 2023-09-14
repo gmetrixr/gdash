@@ -3,25 +3,29 @@ import { isWindow } from "./jsUtils";
 
 /*eslint prefer-const: "off"*/
 /** We need to modify this variable to false to use workTimers. Worker Timers work only in the browswer. */
-export let useWorkerTimers = false;
-
-function newSetInterval(func: Function, timeout: number): number {
-  return ((useWorkerTimers && isWindow) ? wt.setInterval(func, timeout) : setInterval(func, timeout));
+let worker = false;
+function setUseWorkerTimer(use: boolean) {
+  worker = use;
 }
 
-function newClearInterval(timerId: number): void {
-  return ((useWorkerTimers && isWindow) ? wt.clearInterval(timerId) : clearInterval(timerId));
+function workerSetInterval(func: Function, timeout: number): number {
+  return ((worker && isWindow) ? wt.setInterval(func, timeout) : setInterval(func, timeout));
 }
 
-function newSetTimeout(func: Function, delay: number): number {
-  return ((useWorkerTimers && isWindow) ? wt.setTimeout(func, delay) : setTimeout(func, delay));
+function workerClearInterval(timerId: number): void {
+  return ((worker && isWindow) ? wt.clearInterval(timerId) : clearInterval(timerId));
 }
 
-function newClearTimeout(timerId: number): void {
-  return ((useWorkerTimers && isWindow) ? wt.clearTimeout(timerId) : clearTimeout(timerId));
+function workerSetTimeout(func: Function, delay: number): number {
+  return ((worker && isWindow) ? wt.setTimeout(func, delay) : setTimeout(func, delay));
 }
 
-export { newSetInterval as setInterval }
-export { newClearInterval as clearInterval }
-export { newSetTimeout as setTimeout }
-export { newClearTimeout as clearTimeout }
+function workerClearTimeout(timerId: number): void {
+  return ((worker && isWindow) ? wt.clearTimeout(timerId) : clearTimeout(timerId));
+}
+
+export { setUseWorkerTimer }
+export { workerSetInterval as setInterval }
+export { workerClearInterval as clearInterval }
+export { workerSetTimeout as setTimeout }
+export { workerClearTimeout as clearTimeout }
