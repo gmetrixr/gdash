@@ -8,24 +8,24 @@ function setUseWorkerTimer(use: boolean) {
   worker = use;
 }
 
-function workerSetInterval(func: Function, timeout: number): number {
-  return ((worker && isWindow) ? wt.setInterval(func, timeout) : setInterval(func, timeout));
+function customSetInterval(func: Function, timeout: number): number {
+  return ((worker && isWindow) ? wt.setInterval(func, timeout) : global.setInterval(func, timeout));
 }
 
-function workerClearInterval(timerId: number): void {
-  return ((worker && isWindow) ? wt.clearInterval(timerId) : clearInterval(timerId));
+function customClearInterval(timerId: number): void {
+  return ((worker && isWindow) ? wt.clearInterval(timerId) : global.clearInterval(timerId));
 }
 
-function workerSetTimeout(func: Function, delay: number): number {
-  return ((worker && isWindow) ? wt.setTimeout(func, delay) : setTimeout(func, delay));
+function customSetTimeout(func: Function, delay: number): number {
+  return ((worker && isWindow) ? wt.setTimeout(func, delay) : global.setTimeout(func, delay));
 }
 
-function workerClearTimeout(timerId: number): void {
-  return ((worker && isWindow) ? wt.clearTimeout(timerId) : clearTimeout(timerId));
+function customClearTimeout(timerId: number): void {
+  return ((worker && isWindow) ? wt.clearTimeout(timerId) : global.clearTimeout(timerId));
 }
 
 export { setUseWorkerTimer }
-export { workerSetInterval as setInterval }
-export { workerClearInterval as clearInterval }
-export { workerSetTimeout as setTimeout }
-export { workerClearTimeout as clearTimeout }
+export { customSetInterval as setInterval }
+export { customClearInterval as clearInterval }
+export { customSetTimeout as setTimeout }
+export { customClearTimeout as clearTimeout }
