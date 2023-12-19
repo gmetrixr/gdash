@@ -30,7 +30,7 @@ export const allowedMimeTypes: Record<FileType, string[]> = {
   [FileType.VIDEO]: ["video/mp4", "video/mpeg", "video/x-m4v"],
   [FileType.AUDIO]: ["audio/aac", "audio/mp3", "audio/mpeg"],
   [FileType.COMPRESSED]: ["application/zip", "application/vnd.rar", "application/x-tar", "application/gzip", "application/x-bzip2", "application/x-7z-compressed"],
-  [FileType.THREED]: ["model/gltf+binary", "model/gltf+json"],
+  [FileType.THREED]: ["model/gltf+binary", "model/gltf+json", "application/octet-stream"],
   [FileType.GIF]: ["image/gif"],
   [FileType.OTHER]: ["application/pdf"],
   [FileType.PDF]: ["application/pdf"],
