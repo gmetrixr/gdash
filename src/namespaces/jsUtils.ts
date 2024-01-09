@@ -17,15 +17,6 @@ export const HOUR = 60 * MINUTE;
 export const DAY = 24 * HOUR;
 
 /**
- * https://github.com/uuidjs/uuid#quickstart
- * Generates a Random UUID
- * 
- */
-export const generateRandomUUID = (): string => {
-  return uuidv4();
-};
-
-/**
  * Standard templating function using mustache
  * Eg: template: "{{title}} spends {{calc}}" with value {title: "abc", calc: 2} renders the string "abc spends 2"
  * Use tripple brackets {{{ }}} to prevent escaping HTML
@@ -50,6 +41,7 @@ export const mapToObject = <T>(map: Map<T, unknown>): unknown => {
 };
 
 /**
+ * @deprecated
  * Date.now() gives an output like 1602018008290 (13 digits)
  * The last three digits represent milliseconds.
  * Overlaps using a simple Date.now() happen when two ids generated in the same millisecond.
@@ -60,15 +52,24 @@ export const mapToObject = <T>(map: Map<T, unknown>): unknown => {
 export const generateId = (): number => Math.floor(Date.now() + (Math.random() * 1000000));
 
 /**
+ * Generates a 15 digit random integer, where the first digit is not 0. (>= 1e^15 & < 1e^16)
  * JS integers (without period) are accurate upto 15 digits
  * So generateIdV2 returns a 15 digit integer
  * Math.random() returns a random number between 0 (inclusive),  and 1 (exclusive)
  * the output is 0.xxxx (16 decimal places)
  * So Math.random() * 0.9e16 is a max of 899... 15 integer digits, 1 decimal digit.
  * Adding 0.1e16 ensures the first digit isn't 0. Math.floor removes the decimal digit.
- * So, we are guranteed a 15 digit integer between 1^15 (inclusive) and 1^16 (exclusive)
+ * So, we are guranteed a 15 digit integer between 1e^15 (inclusive) and 1e^16 (exclusive)
  */
 export const generateIdV2 = (): number => Math.floor(Math.random() * 0.9e16 + 0.1e16);
+
+/**
+ * Generates a Random UUID string
+ * Refenrence: https://github.com/uuidjs/uuid#quickstart
+ */
+export const generateRandomUUID = (): string => {
+  return uuidv4();
+};
 
 /**
  * Set operations, from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set
@@ -192,23 +193,6 @@ export const isNotNullish = <T>(arg: T | null | void): boolean => {
     return true;
   }
   return false;
-};
-
-export const appendQueryParam = ({ url, key, value }: { url: string, key: string, value: string }): string => {
-  const urlObj = new URL(url);
-  urlObj.searchParams.append(key, value);
-  return urlObj.href;
-};
-
-export const getQueryParam = ({ url, key }: { url: string, key: string }): string | null => {
-  const urlObj = new URL(url);
-  return urlObj.searchParams.get(key);
-};
-
-export const deleteQueryParam = ({ url, key }: { url: string, key: string }): string => {
-  const urlObj = new URL(url);
-  urlObj.searchParams.delete(key);
-  return urlObj.href;
 };
 
 export const deepCloneStringify = <T>(node: T): T => JSON.parse(JSON.stringify(node));

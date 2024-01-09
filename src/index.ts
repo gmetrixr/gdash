@@ -4,6 +4,7 @@ import * as storageUtils from "./namespaces/storageUtils";
 import * as stringUtils from "./namespaces/stringUtils";
 import * as pathUtils from "./namespaces/pathUtils";
 import * as timerUtils from "./namespaces/timerUtils";
+import * as urlUtils from "./namespaces/urlUtils";
 
 export {
   ConfigNm,
@@ -11,5 +12,6 @@ export {
   storageUtils,
   stringUtils,
   pathUtils,
-  timerUtils
+  timerUtils,
+  urlUtils,
 };
