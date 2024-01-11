@@ -34,3 +34,9 @@ export const isURLValid = (url: string): boolean => {
   }
 };
 
+/** Gets rid of hash and ? in the URL */
+export const getBaseUrl = (): string => {
+  const url = window.location.origin + window.location.pathname
+  //http://example.com/somedir/somefile/
+  return url;
+}
