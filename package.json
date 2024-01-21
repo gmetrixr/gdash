@@ -25,7 +25,7 @@
     "@comment PUBLISH": "Used for publishing this repo",
     "build": "rm -rf lib; pnpm buildesm && pnpm buildcjs && pnpm buildpackagejson",
     "buildpackagejson": "tsconfig-to-dual-package ./tsconfig.json ./tsconfig-cjs.json",
-    "buildesm": "./node_modules/.bin/tsc -p tsconfig.json;",
+    "buildesm": "./node_modules/.bin/tsc -p tsconfig-esm.json;",
     "buildcjs": "./node_modules/.bin/tsc -p tsconfig-cjs.json;",
     "bundle": "pnpm publish:version && pnpm publish:npm",
     "publish:version": "N=$(node -p \"require('./package.json').name\") && pnpm version patch --message \"v%s: $N [ci skip]\"",
@@ -45,6 +45,7 @@
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@tsconfig/node20": "^20.1.2",
+    "@types/node": "^20.11.5",
     "@typescript-eslint/eslint-plugin": "^6.15.0",
     "@typescript-eslint/parser": "^6.15.0",
     "eslint": "^8.56.0",
