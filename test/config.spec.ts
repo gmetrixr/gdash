@@ -1,5 +1,5 @@
-import {Config, PropertyValue} from "../src/namespaces/config";
-import { expect } from "chai";
+import { expect, describe, xdescribe, beforeAll, afterAll, it, xit, afterEach } from "@jest/globals";
+import {Config, PropertyValue} from "../src/namespaces/config.js";
 
 describe("Console log test", () => {
   it("Logs console", () => {
@@ -31,9 +31,9 @@ describe("Config", () => {
 
     const config = new Config({properties: Object.values(properties), propertyDefaults});
 
-    expect(config.get(properties.PUBLIC_IS_PRIVATE_INSTALLATION)).to.be.true;
-    expect(config.get(properties.PORT_EXPRESS)).to.be.eq(3249);
-    expect(config.getWindowConfigJSONString()).to.be.eq("{\"PUBLIC_IS_PRIVATE_INSTALLATION\":true,\"PUBLIC_IS_ENTERPRISE\":false,\"PUBLIC_SKETCHFAB_TOKEN\":\"abcdef\"}");
+    expect(config.get(properties.PUBLIC_IS_PRIVATE_INSTALLATION)).toBe(true);
+    expect(config.get(properties.PORT_EXPRESS)).toBe(3249);
+    expect(config.getWindowConfigJSONString()).toBe("{\"PUBLIC_IS_PRIVATE_INSTALLATION\":true,\"PUBLIC_IS_ENTERPRISE\":false,\"PUBLIC_SKETCHFAB_TOKEN\":\"abcdef\"}");
   });
 
   it("should try config on window", () => {
@@ -51,9 +51,9 @@ describe("Config", () => {
     global.window = {windowConfig: {"PUBLIC_IS_PRIVATE_INSTALLATION":true,"PUBLIC_IS_ENTERPRISE":false,"PUBLIC_SKETCHFAB_TOKEN":"abcdef"}};
 
     const config = new Config({properties: Object.values(properties), isWindowOverride: true});
-    expect(config.get(properties.PUBLIC_IS_PRIVATE_INSTALLATION)).to.be.true;
-    expect(config.get(properties.PUBLIC_IS_ENTERPRISE)).to.be.false;
-    expect(config.get(properties.PUBLIC_SKETCHFAB_TOKEN)).to.be.eq("abcdef");
+    expect(config.get(properties.PUBLIC_IS_PRIVATE_INSTALLATION)).toBe(true);
+    expect(config.get(properties.PUBLIC_IS_ENTERPRISE)).toBe(false);
+    expect(config.get(properties.PUBLIC_SKETCHFAB_TOKEN)).toBe("abcdef");
   });
 
   it("should handle automatic boolean converion of unix shell vars", () => {
@@ -66,8 +66,8 @@ describe("Config", () => {
     process.env[properties.IS_BOOLEAN_FALSE] = "false";
 
     const config = new Config({properties: Object.values(properties)});
-    expect(config.get(properties.IS_BOOLEAN_TRUE)).to.be.true;
-    expect(config.get(properties.IS_BOOLEAN_FALSE)).to.be.false;
+    expect(config.get(properties.IS_BOOLEAN_TRUE)).toBe(true);
+    expect(config.get(properties.IS_BOOLEAN_FALSE)).toBe(false);
   });
 
   it("should not convert string boolens in window env", () => {
@@ -80,7 +80,7 @@ describe("Config", () => {
     global.window = {windowConfig: {"PUBLIC_FALSE_BOOLEAN":"false"}};
 
     const config = new Config({properties: Object.values(properties), isWindowOverride: true});
-    expect(config.get(properties.PUBLIC_FALSE_BOOLEAN)).to.be.eq("false");
+    expect(config.get(properties.PUBLIC_FALSE_BOOLEAN)).toBe("false");
   });
 
   it("should handle string templating on config properties", () => {
@@ -105,10 +105,10 @@ describe("Config", () => {
 
     const config = new Config({properties: Object.values(properties), propertyDefaults});
 
-    expect(config.get(properties.CDN_BASE)).to.be.eq("http://localhost");
-    expect(config.get(properties.CDN_STATIC)).to.be.eq("http://localhost:3650/localcloud");
-    expect(config.get(properties.PUBLIC_CDN_WEBPACK)).to.be.eq("http://localhost:3652/web/");
-    expect(config.getWindowConfigJSONString()).to.be.eq("{\"PUBLIC_CDN_WEBPACK\":\"http://localhost:3652/web/\",\"PUBLIC_GEOLOCATE_API_KEY\":\"abcdef\"}");
+    expect(config.get(properties.CDN_BASE)).toBe("http://localhost");
+    expect(config.get(properties.CDN_STATIC)).toBe("http://localhost:3650/localcloud");
+    expect(config.get(properties.PUBLIC_CDN_WEBPACK)).toBe("http://localhost:3652/web/");
+    expect(config.getWindowConfigJSONString()).toBe("{\"PUBLIC_CDN_WEBPACK\":\"http://localhost:3652/web/\",\"PUBLIC_GEOLOCATE_API_KEY\":\"abcdef\"}");
   });
 
 });

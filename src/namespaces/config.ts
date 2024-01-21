@@ -16,7 +16,7 @@
  *    this map is used to specify all other properties of that property
  */
 
-import { isWindow, renderTemplate, mapToObject } from "./jsUtils";
+import { isWindow, renderTemplate, mapToObject } from "./jsUtils.js";
 
 export type PropertyValue = string|number|boolean|undefined;
 type PropertyLabel = string;

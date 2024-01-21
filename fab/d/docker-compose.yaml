@@ -2,7 +2,7 @@ version: "3"
 
 services:
   gdash:
-    image: "gmetrixr/baseimage:node-18-dev-v1"
+    image: "gmetrixr/baseimage:node-20-dev-v6"
     container_name: gmetri_gdash
     command: ["tail", "-f", "/dev/null"]
     working_dir: /src

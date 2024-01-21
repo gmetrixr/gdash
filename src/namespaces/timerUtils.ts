@@ -1,5 +1,5 @@
 import * as wt from "worker-timers";
-import { isWindow } from "./jsUtils";
+import { isWindow } from "./jsUtils.js";
 
 /*eslint prefer-const: "off"*/
 /** We need to modify this variable to false to use workTimers. Worker Timers work only in the browswer. */
