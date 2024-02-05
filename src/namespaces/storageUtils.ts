@@ -20,6 +20,10 @@ export function getPermanentCookieWithName({ key }: { key: string }): (string | 
   return Cookies.get(key);
 }
 
+export function removePermanentCookieWithName({ key }: { key: string }) {
+  Cookies.remove(key);
+}
+
 export function getTokenWithName({ key, req }: { key: string, req?: Request }) {
   return Cookies.get(key);
 }
