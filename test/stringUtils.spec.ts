@@ -174,7 +174,6 @@ describe("unique name test", () => {
 
   it("should see if getSafeAndUniqueCamelSlug works test 1", () => {
     const res = stringUtils.getSafeAndUniqueCamelSlug("My First Book", ["my-first-book", "my-first-book-1", "my-second-book", "my-first-book-1-1"]);
-    console.log("Response : ", res);
     expect(res).toBe("my-first-book-2");
   })
 });
