@@ -273,7 +273,7 @@ export const getUniqueSlug = (originalName: string, existingNames: string[]): st
   return `${seriesBase}_${maxInSeries + 1}`;
 };
 
-export const getUniqueCamelSlug = (originalName: string, existingNames: string[]): string => {
+export const getUniqueKebabSlug = (originalName: string, existingNames: string[]): string => {
   const nameSeriesExtractorRegex = {
     // *? makes the first part not greedy
     // (?:xxxx)? in the second part after the base makes the second part optional
@@ -396,9 +396,9 @@ export const getSafeAndUniqueRecordName = (originalName: string, existingNames: 
  * 1. Ensures only safe characters are used
  * 2. Ensures no duplicate names are used
  */
-export const getSafeAndUniqueCamelSlug = (originalName: string, existingNames: string[]): string => {
+export const getSafeAndUniqueKebabSlug = (originalName: string, existingNames: string[]): string => {
   const safeOriginalName = makeNameSafeL3(originalName, "-").toLowerCase();
-  return getUniqueCamelSlug(safeOriginalName, existingNames);
+  return getUniqueKebabSlug(safeOriginalName, existingNames);
 }
 
 export const getRandomAvatarName = (): string => {

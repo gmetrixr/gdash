@@ -172,8 +172,8 @@ describe("unique name test", () => {
     expect(res).toBe("abc (4).png");
   })
 
-  it("should see if getSafeAndUniqueCamelSlug works test 1", () => {
-    const res = stringUtils.getSafeAndUniqueCamelSlug("My First Book", ["my-first-book", "my-first-book-1", "my-second-book", "my-first-book-1-1"]);
+  it("should see if getSafeAndUniqueKebabSlug works test 1", () => {
+    const res = stringUtils.getSafeAndUniqueKebabSlug("My First Book", ["my-first-book", "my-first-book-1", "my-second-book", "my-first-book-1-1"]);
     expect(res).toBe("my-first-book-2");
   })
 });
