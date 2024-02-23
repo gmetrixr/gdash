@@ -171,4 +171,10 @@ describe("unique name test", () => {
     const res = stringUtils.getUniqueNameForFilename("abc.png", ["abc.png", "abc (3).png", "xyc.png"]);
     expect(res).toBe("abc (4).png");
   })
+
+  it("should see if getSafeAndUniqueCamelSlug works test 1", () => {
+    const res = stringUtils.getSafeAndUniqueCamelSlug("My First Book", ["my-first-book", "my-first-book-1", "my-second-book", "my-first-book-1-1"]);
+    console.log("Response : ", res);
+    expect(res).toBe("my-first-book-2");
+  })
 });

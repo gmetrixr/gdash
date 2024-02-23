@@ -1,7 +1,7 @@
 import { expect, describe, xdescribe, beforeAll, afterAll, it, xit, afterEach } from "@jest/globals";
 import { jsUtils } from "../src/index.js";
 import largeJson from "./jsons/largeProject.json";
-const { deepCloneRfdc, deepCloneStringify } = jsUtils;
+const { deepCloneStructured, deepCloneRfdc, deepCloneStringify } = jsUtils;
 import { performance } from "perf_hooks";
 
 describe("uuid Test", () => {
@@ -29,6 +29,14 @@ describe("uuid Test", () => {
     t2 = performance.now();
     expect(JSON.stringify(finalJson)).toBe(JSON.stringify(largeJson));
     console.log(`Time taken by deepCloneRfdc is ${t2 - t1} milliseconds`);
+
+    t1 = performance.now();
+    for(let i = 0; i < 50; i++) {
+      finalJson = deepCloneStructured(largeJson);
+    }
+    t2 = performance.now();
+    expect(JSON.stringify(finalJson)).toBe(JSON.stringify(largeJson));
+    console.log(`Time taken by deepCloneStructured is ${t2 - t1} milliseconds`);
 
   }, 20000);
 

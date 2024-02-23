@@ -133,7 +133,7 @@ export function escape(name: string): string {
  * Make the name string safe to use.
  * Replaces all characters that are not a part of the regex with _
  */
-function makeNameSafe(name = "", regex: RegExp): string {
+function makeNameSafe(name = "", regex: RegExp, replacementChar: string): string {
   name = escape(name);
   // * First find the unsafe characters from the string - returns an array of unsafe characters (including consequtive chars) ex: ["*&^", "+", "<>"]
   // * taken from here: https://stackoverflow.com/a/20541853
@@ -147,7 +147,7 @@ function makeNameSafe(name = "", regex: RegExp): string {
   // * loop over all items and replace with `_` (underscore)
   for(const unsafeCharStr of unsafeCharSetArr) {
     // global flag not required here since multiple occurences are returned separately. Ex +abc+ return -> [+, +]
-    name = name.replace(unsafeCharStr, "_");
+    name = name.replace(unsafeCharStr, replacementChar);
   }
   return name;
 }
@@ -176,22 +176,22 @@ export const safeNameRegexL3CheckString = "^([a-zA-Z0-9_-]+)$"; // /^([a-zA-Z0-9
 /**
  * Least strict, used for project/scene/element names
  */
-export function makeNameSafeL1(name: string): string {
-  return makeNameSafe(name.trim(), safeNameRegexL1);
+export function makeNameSafeL1(name: string, replacementChar = "_"): string {
+  return makeNameSafe(name.trim(), safeNameRegexL1, replacementChar);
 }
 
 /**
  * Medium strict, used for file/folder names + variable names
  */
-export function makeNameSafeL2(name: string): string {
-  return makeNameSafe(name.trim(), safeNameRegexL2);
+export function makeNameSafeL2(name: string, replacementChar = "_"): string {
+  return makeNameSafe(name.trim(), safeNameRegexL2, replacementChar);
 }
 
 /**
  * Most strict, used for slugs
  */
-export function makeNameSafeL3(name: string): string {
-  return makeNameSafe(name.trim(), safeNameRegexL3);
+export function makeNameSafeL3(name: string, replacementChar = "_"): string {
+  return makeNameSafe(name.trim(), safeNameRegexL3, replacementChar);
 }
 
 
@@ -273,6 +273,36 @@ export const getUniqueSlug = (originalName: string, existingNames: string[]): st
   return `${seriesBase}_${maxInSeries + 1}`;
 };
 
+export const getUniqueCamelSlug = (originalName: string, existingNames: string[]): string => {
+  const nameSeriesExtractorRegex = {
+    // *? makes the first part not greedy
+    // (?:xxxx)? in the second part after the base makes the second part optional
+    // used to match patterns like Hello_123
+    regex: /^(.*?)(?:-(\d+))?$/, //No space (\s) allowed 
+    errorMessage: "no name series found"
+  }
+
+  if (!existingNames.includes(originalName)) {
+    return originalName;
+  }
+
+  const res = nameSeriesExtractorRegex.regex.exec(originalName);
+  const seriesBase = res?.[1] ?? originalName;
+  const sameSeriesInExistingNames = existingNames.filter(u => u.startsWith(seriesBase)); //filter existingNames
+  
+  const series = sameSeriesInExistingNames.map(currName => {
+    const matchedGroups = nameSeriesExtractorRegex.regex.exec(currName);
+    return parseInt(matchedGroups?.[2] ?? "0");
+  });
+
+  let maxInSeries = series.reduce((a, b) => a >= b ? a : b);
+  if (maxInSeries === undefined) {
+    maxInSeries = 0;
+  }
+
+  return `${seriesBase}-${maxInSeries + 1}`;
+};
+
 /**
  * Problem: In getUniqueName, file extensions aren't considered.
  * So: image.png's safe name becomes "image.png (1)" - but it should have become "image (1).png"
@@ -325,7 +355,7 @@ export const getSafeAndUniqueDeploymentSlug = (originalName: string, existingNam
 
 /**
  * 1. Ensures only safe characters are used
- * 2. Ensures duplicate names are used
+ * 2. Ensures no duplicate names are used
  * 3. Ensures blacklisted names are removed
  */
 export const getSafeAndUniqueOrgCName = (originalName: string, existingNames: string[]): string => {
@@ -337,7 +367,7 @@ export const getSafeAndUniqueOrgCName = (originalName: string, existingNames: st
 
 /**
  * 1. Ensures only safe characters are used
- * 2. Ensures duplicate names are used
+ * 2. Ensures no duplicate names are used
  */
 export const getSafeAndUniqueProjectName = (originalName: string, existingNames: string[]): string => {
   const safeOriginalName = makeNameSafeL1(originalName);
@@ -346,7 +376,7 @@ export const getSafeAndUniqueProjectName = (originalName: string, existingNames:
 
 /**
  * 1. Ensures only safe characters are used
- * 2. Ensures duplicate names are used
+ * 2. Ensures no duplicate names are used
  */
 export const getSafeAndUniqueFileName = (originalName: string, existingNames: string[]): string => {
   const safeOriginalName = makeNameSafeL2(originalName);
@@ -355,11 +385,20 @@ export const getSafeAndUniqueFileName = (originalName: string, existingNames: st
 
 /**
  * 1. Ensures only safe characters are used
- * 2. Ensures duplicate names are used
+ * 2. Ensures no duplicate names are used
  */
 export const getSafeAndUniqueRecordName = (originalName: string, existingNames: string[]): string => {
   const safeOriginalName = makeNameSafeL1(originalName);
   return getUniqueName(safeOriginalName, existingNames);
+}
+
+/**
+ * 1. Ensures only safe characters are used
+ * 2. Ensures no duplicate names are used
+ */
+export const getSafeAndUniqueCamelSlug = (originalName: string, existingNames: string[]): string => {
+  const safeOriginalName = makeNameSafeL3(originalName, "-").toLowerCase();
+  return getUniqueCamelSlug(safeOriginalName, existingNames);
 }
 
 export const getRandomAvatarName = (): string => {
