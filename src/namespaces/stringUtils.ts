@@ -74,7 +74,7 @@ export const regexStrings = {
  * @param password T
  */
 export const checkPasswordStrength = (password: string): boolean => {
-  if (password.length < 8) {
+  if (password.length < 8 || password.length > 100) {
     return false;
   }
 
