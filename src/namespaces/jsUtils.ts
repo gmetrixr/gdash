@@ -71,6 +71,10 @@ export const generateRandomUUID = (): string => {
   return uuidv4();
 };
 
+export const generateRandom6Digit = (): number => {
+  return Math.floor(Math.random() * 0.9e6 + 0.1e6);
+}
+
 /**
  * Set operations, from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set
  */
