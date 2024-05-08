@@ -1,5 +1,5 @@
 import CryptoJS from "crypto-js";
-console.log("VIVEK", CryptoJS.AES);
+
 export const encrytpAES = async ({ data, key }: {
   data: string,
   key: string

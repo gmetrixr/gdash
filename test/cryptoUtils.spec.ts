@@ -24,7 +24,7 @@ describe("cryptoUtitls rsa encrypt/decrypt test", () => {
 describe("cryptoUtitls AES encrypt/decrypt test", () => {
   it("encrypt and decrypt correctly", async () => {
     const key = "hello1234asdf5678";
-    const data = `{"email":"vivek+local002@gmetri.com","password":"test1234!","captcha_token":"03AFcWeA794bZqLSyRLcQ_MPB3ns-8CDfuNe2HiIN2Az36UtCgxbFmt6D8RGhwWaQOiUfyMuQSYWQLaZZTOFghi6dNXQCk91XkWsHQNjm-2X2_yaL83Qr4sfbrRqsyWxZOXDx3C96tycyKzWNJdf6dJF51zwZNeY6ZcNxjEI-Nngaa7hzUcalxabjjZYXftvi6tqKezuinJbK-i67tyfxULrMwN_SvLJdxggOde7AfZ-s2ohqffiM2wb6l3W7Grm1ilk2oHTfD2cxA-j6n-hRQlMwybbQJU6HZVR6i9GO9ki2KnZ2UULUaOdm78wvqSf5Q2uK67YXJL9wAN2XlkvY5GFpzGPc3sKQD7W4Q8s5RgC2XtedgZ_CnUabU11wBpsWW-sgpIO_U9K4p1eDN6buVT_EeNKQrc-7c_XMGGOWfLwxwR24Cr5TgaRbUxmokV3ZGcMoYjGakalPXdG7LLMc3Rg-txTNZgMq_X8YKMBWifH033yTth-TwLwPGZRY7Z45P5xNVpIQQdf3c7Iv_IrZQ7YU5vPVCWKKakHKHg5StkCjlt_f57db98z8OYtwDmCU0OdcUYXNn-0ylHoxr6C-kTZTZrgB9bpDe-SXSYV6IH-7u9Nb-VlWRrSlnRqpeyvF0CGvXsey5-jaVr6K18-4het3CmrqUivk3cw","user_json":{"ref":"","promo_code":""}}`;
+    const data = `test123`;
     const enc = await cryptoUtils.encrytpAES({ data, key });
     console.log("Encrypted Value:", enc);
 
