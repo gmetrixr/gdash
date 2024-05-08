@@ -12,6 +12,10 @@ if (typeof window === "undefined") {
     Subtle = window.crypto;
 }
 
+/**
+ * String to Array Buffer
+ * Copied from https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/importKey
+ */
 function str2ab(str: string) {
   const buf = new ArrayBuffer(str.length);
   const bufView = new Uint8Array(buf);
@@ -21,6 +25,10 @@ function str2ab(str: string) {
   return buf;
 }
 
+/**
+ * Array Buffer to Base64
+ * Copied from https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/importKey
+ */
 function abTob64(ab: ArrayBuffer) {
   let binary = "";
   const bytes = new Uint8Array(ab);
@@ -31,6 +39,10 @@ function abTob64(ab: ArrayBuffer) {
   return btoa(binary);
 }
 
+/**
+ * Array Buffer to String
+ * Copied from https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/importKey
+ */
 function abToStr(ab: ArrayBuffer) {
   const decoder = new TextDecoder();
   return decoder.decode(ab);
@@ -90,8 +102,10 @@ async function importRsaPrivateKey(pem: string) {
   return key;
 }
 
-//! Command to generate the public private key pair
-//! openssl genrsa -out private_key.pem && openssl rsa -in private_key.pem -pubout -out publick_key.pem
+/**
+ * ! Command to generate the public private key pair
+ * ! openssl genrsa -out private_key.pem && openssl rsa -in private_key.pem -pubout -out publick_key.pem
+ */
 export const encryptData = async ({ data, pemEncodedPublicKey }: {
     data: string,
     pemEncodedPublicKey: string
