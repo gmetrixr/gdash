@@ -1,15 +1,14 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
-let Subtle: any;
-
-// Check if running in Node.js or browser
-if (typeof window === "undefined") {
-    // Node.js environment
-    import("node:crypto").then(crypto => {
-      Subtle = crypto.webcrypto.subtle;
-    });
-} else {
-    // Browser environment
-    Subtle = window.crypto;
+// Workaround for making it work in a browser
+async function getSubtle() {
+  // Check if running in Node.js or browser
+  if (typeof window === "undefined") {
+      // Node.js environment
+      return (await import("node:crypto")).webcrypto.subtle;
+  } else {
+      // Browser environment
+      return window.crypto.subtle;
+  }
 }
 
 /**
@@ -61,6 +60,7 @@ async function importRsaPublicKey(pem: string) {
   // convert from a binary string to an ArrayBuffer
   const binaryDer = str2ab(binaryDerString);
 
+  const Subtle = await getSubtle();
   //! Note: spki can only encrypt;
   const key = await Subtle.importKey(
     "spki",
@@ -89,6 +89,7 @@ async function importRsaPrivateKey(pem: string) {
   const binaryDer = str2ab(binaryDerString);
 
   //! pkcs8 can only decrypt
+  const Subtle = await getSubtle();
   const key = await Subtle.importKey(
     "pkcs8",
     binaryDer,
@@ -111,6 +112,7 @@ export const encryptRSA = async ({ data, pemEncodedPublicKey }: {
     pemEncodedPublicKey: string
 }): Promise<string> => {
   const key = await importRsaPublicKey(pemEncodedPublicKey);
+  const Subtle = await getSubtle();
   const result = await Subtle.encrypt(
     { name: "RSA-OAEP" },
     key,
@@ -127,6 +129,7 @@ export const decryptRSA = async ({
 }): Promise<string> => {
   const key = await importRsaPrivateKey(pemEncodedPPrivateKey);
   const data = atob(dataInBase64);
+  const Subtle = await getSubtle();
   const result = await Subtle.decrypt(
     {
       name: "RSA-OAEP",
