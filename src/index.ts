@@ -6,6 +6,7 @@ import * as stringUtils from "./namespaces/stringUtils.js";
 import * as pathUtils from "./namespaces/pathUtils.js";
 import * as timerUtils from "./namespaces/timerUtils.js";
 import * as urlUtils from "./namespaces/urlUtils.js";
+import * as cryptoUtils from "./namespaces/cryptoUtils.js";
 
 export {
   ConfigNm,
@@ -16,4 +17,5 @@ export {
   pathUtils,
   timerUtils,
   urlUtils,
+  cryptoUtils
 };
