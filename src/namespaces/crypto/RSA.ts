@@ -1,15 +1,5 @@
-/* eslint-disable  @typescript-eslint/no-explicit-any */
-// Workaround for making it work in a browser
-async function getSubtle() {
-  // Check if running in Node.js or browser
-  if (typeof window === "undefined") {
-      // Node.js environment
-      return (await import("node:crypto")).webcrypto.subtle;
-  } else {
-      // Browser environment
-      return window.crypto.subtle;
-  }
-}
+import { getSubtle } from "./common.js";
+
 
 /**
  * String to Array Buffer
