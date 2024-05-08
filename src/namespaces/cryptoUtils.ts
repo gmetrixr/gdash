@@ -4,8 +4,9 @@ let Subtle: any;
 // Check if running in Node.js or browser
 if (typeof window === "undefined") {
     // Node.js environment
-    const crypto = await import("node:crypto");
-    Subtle = crypto.webcrypto.subtle;
+    import("node:crypto").then(crypto => {
+      Subtle = crypto.webcrypto.subtle;
+    });
 } else {
     // Browser environment
     Subtle = window.crypto;
