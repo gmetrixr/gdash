@@ -6,13 +6,13 @@ import { expect, describe, xdescribe, beforeAll, afterAll, it, xit, afterEach } 
 describe("cryptoUtitls encrypt/decrypt test", () => {
   it("encrypt and decrypt correctly", async () => {
     const value = "test";
-    const enc = await cryptoUtils.encryptData({
+    const enc = await cryptoUtils.encryptRSA({
       data: value,
       pemEncodedPublicKey: publicKey
     })
     console.log("Encrypted Value:", enc);
 
-    const dec = await cryptoUtils.decryptData({
+    const dec = await cryptoUtils.decryptRSA({
       dataInBase64: enc,
       pemEncodedPPrivateKey: privateKey
     })
