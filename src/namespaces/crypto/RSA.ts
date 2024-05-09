@@ -1,11 +1,10 @@
 import { getSubtle } from "./common.js";
 
-
 /**
  * String to Array Buffer
  * Copied from https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/importKey
  */
-function str2ab(str: string) {
+export function str2ab(str: string) {
   const buf = new ArrayBuffer(str.length);
   const bufView = new Uint8Array(buf);
   for (let i = 0, strLen = str.length; i < strLen; i++) {
@@ -41,10 +40,7 @@ async function importRsaPublicKey(pem: string) {
   // fetch the part of the PEM string between header and footer
   const pemHeader = "-----BEGIN PUBLIC KEY-----";
   const pemFooter = "-----END PUBLIC KEY-----";
-  const pemContents = pem.substring(
-    pemHeader.length,
-    pem.length - pemFooter.length - 1
-  );
+  const pemContents = pem.substring(pemHeader.length, pem.length - pemFooter.length - 1);
   // base64 decode the string to get the binary data
   const binaryDerString = atob(pemContents);
   // convert from a binary string to an ArrayBuffer
@@ -60,7 +56,7 @@ async function importRsaPublicKey(pem: string) {
       hash: "SHA-256",
     },
     true,
-    ["encrypt"]
+    ["encrypt"],
   );
   return key;
 }
@@ -69,10 +65,7 @@ async function importRsaPrivateKey(pem: string) {
   // fetch the part of the PEM string between header and footer
   const pemHeader = "-----BEGIN PRIVATE KEY-----";
   const pemFooter = "-----END PRIVATE KEY-----";
-  const pemContents = pem.substring(
-    pemHeader.length,
-    pem.length - pemFooter.length - 1
-  );
+  const pemContents = pem.substring(pemHeader.length, pem.length - pemFooter.length - 1);
   // base64 decode the string to get the binary data
   const binaryDerString = atob(pemContents);
   // convert from a binary string to an ArrayBuffer
@@ -88,7 +81,7 @@ async function importRsaPrivateKey(pem: string) {
       hash: "SHA-256",
     },
     true,
-    ["decrypt"]
+    ["decrypt"],
   );
   return key;
 }
@@ -96,34 +89,26 @@ async function importRsaPrivateKey(pem: string) {
 /**
  * ! Command to generate the public private key pair
  * ! openssl genrsa -out private_key.pem && openssl rsa -in private_key.pem -pubout -out publick_key.pem
- * 
- * Right now this function works only for < 512 bytes of data.
+ *
+ * Right now this function works only for < 256 bytes (numbits/8) of data.
  * A character in string can take anywhere between 1 and 4 bytes.
- * So restricting data to <128 characters. 
+ * So restricting data to < 256 bytes.
+ * 
+ * The only role of keybits, is the tell the function when we have crossed the max safe length of the input data
  */
-export const encryptRSA = async ({ data, pemEncodedPublicKey }: {
-    data: string,
-    pemEncodedPublicKey: string
-}): Promise<string> => {
-  if(data.length > 128) {
-    throw new Error(`Unable to encrypt. Input string length > 128 characters.`);
+export const encryptRSA = async ({ data, pemEncodedPublicKey, keybits = 2048}: { data: string; pemEncodedPublicKey: string, keybits?: number }): Promise<string> => {
+  const ab = str2ab(data); // Convert string to array buffer
+  const maxByteLength = keybits / 8;
+  if (ab.byteLength > maxByteLength) {
+    throw new Error(`Unable to encrypt. Input string length > ${maxByteLength} characters.`);
   }
   const key = await importRsaPublicKey(pemEncodedPublicKey);
   const Subtle = await getSubtle();
-  const result = await Subtle.encrypt(
-    { name: "RSA-OAEP" },
-    key,
-    str2ab(data)
-  );
+  const result = await Subtle.encrypt({ name: "RSA-OAEP" }, key, ab);
   return abTob64(result);
 };
 
-export const decryptRSA = async ({
-  dataInBase64, pemEncodedPPrivateKey
-}:{
-  pemEncodedPPrivateKey: string,
-  dataInBase64: string
-}): Promise<string> => {
+export const decryptRSA = async ({ dataInBase64, pemEncodedPPrivateKey }: { pemEncodedPPrivateKey: string; dataInBase64: string }): Promise<string> => {
   const key = await importRsaPrivateKey(pemEncodedPPrivateKey);
   const data = atob(dataInBase64);
   const Subtle = await getSubtle();
@@ -132,7 +117,7 @@ export const decryptRSA = async ({
       name: "RSA-OAEP",
     },
     key,
-    str2ab(data)
+    str2ab(data),
   );
 
   return abToStr(result);
