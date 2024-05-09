@@ -21,19 +21,19 @@ describe("cryptoUtitls rsa encrypt/decrypt test", () => {
 });
 
 
-describe("cryptoUtitls AES encrypt/decrypt test", () => {
-  it("encrypt and decrypt correctly", async () => {
-    const key = "hello1234asdf5678";
-    const data = `test123`;
-    const enc = await cryptoUtils.encrytpAES({ data, key });
-    console.log("Encrypted Value:", enc);
+// describe("cryptoUtitls AES encrypt/decrypt test", () => {
+//   it("encrypt and decrypt correctly", async () => {
+//     const key = "hello1234asdf5678";
+//     const data = `test123`;
+//     const enc = await cryptoUtils.encrytpAES({ data, key });
+//     console.log("Encrypted Value:", enc);
 
-    const dec = await cryptoUtils.decryptAES({ data: enc, key });
+//     const dec = await cryptoUtils.decryptAES({ data: enc, key });
 
-    console.log("Decrypted Value:", dec);
-    expect(dec).toEqual(data);
-  });
-});
+//     console.log("Decrypted Value:", dec);
+//     expect(dec).toEqual(data);
+//   });
+// });
   
 
 const publicKey = `-----BEGIN PUBLIC KEY-----

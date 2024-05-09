@@ -96,11 +96,18 @@ async function importRsaPrivateKey(pem: string) {
 /**
  * ! Command to generate the public private key pair
  * ! openssl genrsa -out private_key.pem && openssl rsa -in private_key.pem -pubout -out publick_key.pem
+ * 
+ * Right now this function works only for < 512 bytes of data.
+ * A character in string can take anywhere between 1 and 4 bytes.
+ * So restricting data to <128 characters. 
  */
 export const encryptRSA = async ({ data, pemEncodedPublicKey }: {
     data: string,
     pemEncodedPublicKey: string
 }): Promise<string> => {
+  if(data.length > 128) {
+    throw new Error(`Unable to encrypt. Input string length > 128 characters.`);
+  }
   const key = await importRsaPublicKey(pemEncodedPublicKey);
   const Subtle = await getSubtle();
   const result = await Subtle.encrypt(
