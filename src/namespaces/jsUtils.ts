@@ -161,7 +161,7 @@ export function mapValuesToOrder<T>(map: {[key: string]: T}, order: number[] = [
  * https://github.com/microsoft/TypeScript/issues/36931
  * Also suffereing from: https://github.com/microsoft/TypeScript/issues/36067
  */
-export const assertIsDefined = function <T>(val: T, message?: string): asserts val is NonNullable<T> {
+export function assertIsDefined<T>(val: T, message?: string): asserts val is NonNullable<T> {
   if(val === undefined || val === null) {
     throw (message ?? `Expected 'val' to be defined, but received ${val}`);
   }
