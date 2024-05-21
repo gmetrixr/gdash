@@ -1,16 +1,35 @@
 import Cookies from "js-cookie";
 
-export const permanentCookieOptionsBrowser = (jwtExpiryMinutes: number): { expires: number, sameSite: "strict" | "Strict" | "lax" | "Lax" | "none" | "None" } => {
+type SiteRestriction = "strict" | "Strict" | "lax" | "Lax" | "none" | "None";
+
+type PermanentCookieOptionsBrowser = {
+  expires: number,
+  sameSite: SiteRestriction,
+  secure?: boolean
+};
+
+type PermanentCookieOptions = {
+  expiryMinutes?: number,
+  siteRestrictions?: SiteRestriction
+};
+
+export const permanentCookieOptionsBrowser = (options: PermanentCookieOptions): PermanentCookieOptionsBrowser => {
+  const { expiryMinutes = 1, siteRestrictions = "lax" } = options;
   //Expire cookie 1 minute before the token expires
-  const expiry_in_days = (jwtExpiryMinutes - 1) / (60 * 24);
-  return { expires: expiry_in_days, sameSite: "lax" };
+  const expiry_in_days = (expiryMinutes - 1) / (60 * 24);
+  return { expires: expiry_in_days, sameSite: siteRestrictions };
 };
 
 /** Functions to interact with browser cookies */
+type SetCookie = {
+  key: string,
+  value: string,
+  options?: PermanentCookieOptions
+};
 
-export function setCookie({ key, value, jwtExpiryMinutes }: { key: string, value: string, jwtExpiryMinutes?: number }) {
-  if(jwtExpiryMinutes) {
-    return Cookies.set(key, value, permanentCookieOptionsBrowser(jwtExpiryMinutes));
+export function setCookie({ key, value, options }: SetCookie) {
+  if(options) {
+    return Cookies.set(key, value, permanentCookieOptionsBrowser(options));
   }
   return Cookies.set(key, value);
 }
