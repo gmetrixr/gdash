@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@types/js-cookie':
-    specifier: ^3.0.3
-    version: 3.0.3
+    specifier: ^3.0.6
+    version: 3.0.6
   '@types/mustache':
     specifier: ^4.2.2
     version: 4.2.2
@@ -855,8 +855,8 @@ packages:
       '@types/istanbul-lib-report': 3.0.3
     dev: true
 
-  /@types/js-cookie@3.0.3:
-    resolution: {integrity: sha512-Xe7IImK09HP1sv2M/aI+48a20VX+TdRJucfq4vfRVy6nWN8PYPOEnlMRSgxJAgYQIXJVL8dZ4/ilAM7dWNaOww==}
+  /@types/js-cookie@3.0.6:
+    resolution: {integrity: sha512-wkw9yd1kEXOPnvEeEV1Go1MmxtBJL0RR79aOTAApecWFVu7w0NNXNqhcWgvw2YgZDYadliXkl14pa3WXw5jlCQ==}
     dev: false
 
   /@types/json-schema@7.0.12:

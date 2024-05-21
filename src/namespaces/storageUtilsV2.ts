@@ -13,11 +13,18 @@ type PermanentCookieOptions = {
   siteRestrictions?: SiteRestriction
 };
 
+function secureCookie(siteRestrictions: SiteRestriction) {
+  return ["none", "None"].includes(siteRestrictions);
+}
+
 export const permanentCookieOptionsBrowser = (options: PermanentCookieOptions): PermanentCookieOptionsBrowser => {
   const { expiryMinutes = 1, siteRestrictions = "lax" } = options;
   //Expire cookie 1 minute before the token expires
   const expiry_in_days = (expiryMinutes - 1) / (60 * 24);
-  return { expires: expiry_in_days, sameSite: siteRestrictions };
+  // * A cookie with siteRestriction = none can't be set without secure = true.
+  // * secure = true cookies will continue to work with https and *.localhost domains
+  // * https://auth0.com/docs/manage-users/cookies/samesite-cookie-attribute-changes#:~:text=Cookies%20without%20the%20SameSite%20attribute,in%20the%20browser's%20cookie%20jar
+  return { expires: expiry_in_days, sameSite: siteRestrictions, secure: secureCookie(siteRestrictions) };
 };
 
 /** Functions to interact with browser cookies */
