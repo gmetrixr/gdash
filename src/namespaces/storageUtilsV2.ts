@@ -17,6 +17,13 @@ function secureCookie(siteRestrictions: SiteRestriction) {
   return ["none", "None"].includes(siteRestrictions);
 }
 
+/**
+ * Can accept an options param which can contain:
+ * 1) expiryMinutes (expiry of cookie in minutes)
+ * 2) siteRestrictions. This is "lax" by default. 
+ * @param options 
+ * @returns 
+ */
 export const permanentCookieOptionsBrowser = (options: PermanentCookieOptions): PermanentCookieOptionsBrowser => {
   const { expiryMinutes = 1, siteRestrictions = "lax" } = options;
   //Expire cookie 1 minute before the token expires
@@ -33,6 +40,14 @@ type SetCookie = {
   value: string,
   options?: PermanentCookieOptions
 };
+
+/** Note that the expiry time is in minutes */
+export function setCookieWithOptions({ key, value, options }: {key: string, value: string, options: Cookies.CookieAttributes | undefined}) {
+  if(options) {
+    return Cookies.set(key, value, options);
+  }
+  return Cookies.set(key, value);
+}
 
 export function setCookie({ key, value, options }: SetCookie) {
   if(options) {
