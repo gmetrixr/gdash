@@ -1,47 +1,8 @@
 import Cookies from "js-cookie";
 
-type SiteRestriction = "strict" | "Strict" | "lax" | "Lax" | "none" | "None";
-
-type PermanentCookieOptionsBrowser = {
-  expires: number,
-  sameSite: SiteRestriction,
-  secure?: boolean
-};
-
-type PermanentCookieOptions = {
-  expiryMinutes?: number,
-  siteRestrictions?: SiteRestriction
-};
-
-function secureCookie(siteRestrictions: SiteRestriction) {
-  return ["none", "None"].includes(siteRestrictions);
-}
-
-/**
- * Can accept an options param which can contain:
- * 1) expiryMinutes (expiry of cookie in minutes)
- * 2) siteRestrictions. This is "lax" by default. 
- * @param options 
- * @returns 
- */
-export const permanentCookieOptionsBrowser = (options: PermanentCookieOptions): PermanentCookieOptionsBrowser => {
-  const { expiryMinutes = 1, siteRestrictions = "lax" } = options;
-  //Expire cookie 1 minute before the token expires
-  const expiry_in_days = (expiryMinutes - 1) / (60 * 24);
-  // * A cookie with siteRestriction = none can't be set without secure = true.
-  // * secure = true cookies will continue to work with https and *.localhost domains
-  // * https://auth0.com/docs/manage-users/cookies/samesite-cookie-attribute-changes#:~:text=Cookies%20without%20the%20SameSite%20attribute,in%20the%20browser's%20cookie%20jar
-  return { expires: expiry_in_days, sameSite: siteRestrictions, secure: secureCookie(siteRestrictions) };
-};
-
-/** Functions to interact with browser cookies */
-type SetCookie = {
-  key: string,
-  value: string,
-  options?: PermanentCookieOptions
-};
-
-/** Note that the expiry time is in minutes */
+/** 
+ * An open function where you can set cookie attributes directly 
+ **/
 export function setCookieWithOptions({ key, value, options }: {key: string, value: string, options: Cookies.CookieAttributes | undefined}) {
   if(options) {
     return Cookies.set(key, value, options);
@@ -49,9 +10,40 @@ export function setCookieWithOptions({ key, value, options }: {key: string, valu
   return Cookies.set(key, value);
 }
 
+function createCookieAttributes (options: CookieOptions): Cookies.CookieAttributes | undefined {
+  const { expiryMinutes, openInEmbeds } = options;
+  const cookieAttributes: Cookies.CookieAttributes | undefined = {
+    "secure": true,
+  };
+  if(expiryMinutes) {
+    cookieAttributes.expires = expiryMinutes / (60 * 24); //"expires" accepts days
+  }
+  if(openInEmbeds) {
+    //https://intercom.help/progressier/en/articles/6894845-why-aren-t-cookies-working-inside-an-iframe
+    //Since Chrome 85, a web page that's inside an iframe and that's on a different domain than the parent won't be able to read its own cookies, unless they've explicitly been set using SameSite=None and Secure.
+    //Hence we need sameSite: "None" and secure: true
+    cookieAttributes.sameSite = "None";
+  } else {
+    cookieAttributes.sameSite = "Lax";
+  }
+  return cookieAttributes;
+}
+
+type CookieOptions = {
+  expiryMinutes?: number,
+  openInEmbeds?: boolean,
+};
+
+/** Functions to interact with browser cookies */
+type SetCookie = {
+  key: string,
+  value: string,
+  options?: CookieOptions
+};
+
 export function setCookie({ key, value, options }: SetCookie) {
   if(options) {
-    return Cookies.set(key, value, permanentCookieOptionsBrowser(options));
+    return Cookies.set(key, value, createCookieAttributes(options));
   }
   return Cookies.set(key, value);
 }
