@@ -206,3 +206,12 @@ export const deepCloneRfdc = <T>(node: T): T => cloneConfigured(node);
 export const deepCloneStructured = <T>(node: T): T => structuredClone(node);
 
 export const deepClone = deepCloneStructured;
+
+/**
+ * Round num to n digits.
+ * Also rounds things lik 1.005 to 1.01 correctly by using Number.EPSILON
+ * https://stackoverflow.com/a/11832950
+ */
+export const roundToNDigits = (num: number, n: number = 2): number => {
+  return Math.round((num + Number.EPSILON) * 10^n) / 10^n
+}
