@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import { DAY, MINUTE } from "./jsUtils.js";
 
 /** 
  * An open function where you can set cookie attributes directly 
@@ -34,14 +35,12 @@ type CookieOptions = {
   openInEmbeds?: boolean,
 };
 
-/** Functions to interact with browser cookies */
-type SetCookie = {
-  key: string,
-  value: string,
-  options?: CookieOptions
-};
+/** Can be used to store user preferences */
+export function setLongLivedCookie({ key, value }: {key: string, value: string}) {
+  return setCookie({key, value, options: {expiryMinutes: DAY * 365 / MINUTE, openInEmbeds: true} });
+}
 
-export function setCookie({ key, value, options }: SetCookie) {
+export function setCookie({ key, value, options }: {key: string, value: string, options: CookieOptions}) {
   if(options) {
     return Cookies.set(key, value, createCookieAttributes(options));
   }
