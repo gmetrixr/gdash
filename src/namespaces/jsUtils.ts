@@ -2,6 +2,10 @@ import { v4 as uuidv4 } from "uuid";
 import mustache from "mustache";
 import clone from "rfdc";
 
+const NAMESPACE = process.env ["PUBLIC_NAMESPACE"];
+export const IS_LOCAL = NAMESPACE === "local";
+export const IS_PROD = NAMESPACE === "prod";
+
 /**
  * Value is true if the code is being executed in a browser window
  */
