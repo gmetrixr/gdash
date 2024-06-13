@@ -50,7 +50,7 @@ export class Config {
       //ignore non public values in window mode
       if(this.isWindow && !this.isExposedProperty(pl))
         return;
-      this.pValues.set(pl, this.getInitialValue_INTERNAL(pl, propertyDefaults))
+      this.pValues.set(pl, this.getInitialValue(pl, propertyDefaults))
     });
     //cache windowConfigString;
     if(!this.isWindow)
@@ -92,10 +92,10 @@ export class Config {
    * 2.2. else use default value
    * 3. else throw error
    */
-  private getInitialValue_INTERNAL(propertyLabel: PropertyLabel, propertyDefaults?: PropertyObject): PropertyValue {
+  private getInitialValue(propertyLabel: PropertyLabel, propertyDefaults?: PropertyObject): PropertyValue {
     let value: PropertyValue;
     value = getEnvValue(propertyLabel, this.isWindow);
-    if(value === undefined && !this.isWindow) { //peek into defaults ONLY if we are not in wi
+    if(value === undefined && !this.isWindow) { //peek into defaults ONLY if we are not in window
       if (propertyDefaults && propertyLabel in propertyDefaults) {
         value = propertyDefaults[propertyLabel];
       }
