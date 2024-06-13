@@ -1,6 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 import mustache from "mustache";
 import clone from "rfdc";
+import { isWindow as isWindowFromEnv } from "./envUtils.js";
+
+/** @deprecated switch to envUtils.isWindow */
+export const isWindow = isWindowFromEnv;
 
 /**
  * Used to specify expiry times in a convenient way
