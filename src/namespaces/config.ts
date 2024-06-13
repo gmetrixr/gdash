@@ -17,7 +17,12 @@
  */
 
 import { renderTemplate, mapToObject } from "./jsUtils.js";
-import { isWindow, PropertyObject, PropertyValue, getEnvValue, PropertyLabel } from "./envUtils.js";
+import { isWindow, getEnvValue } from "./envUtils.js";
+
+export type PropertyValue = string|number|boolean|undefined;
+export type PropertyLabel = string;
+//Can't do PropertyObject = {[propertyLabel: propertyLabel]: PropertyValue} as index signatures can only be strings or number, not aliases
+export type PropertyObject = {[propertyLabel: string]: PropertyValue};
 
 /**
  * Check test cases for detailed usage

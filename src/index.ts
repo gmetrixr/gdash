@@ -12,6 +12,7 @@ import * as cryptoUtils from "./namespaces/cryptoUtils.js";
 export {
   ConfigNm,
   jsUtils,
+  envUtils,
   storageUtils,
   storageUtilsV2,
   stringUtils,

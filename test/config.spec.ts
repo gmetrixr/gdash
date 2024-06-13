@@ -1,6 +1,6 @@
 import { expect, describe, xdescribe, beforeAll, afterAll, it, xit, afterEach } from "@jest/globals";
 import { Config } from "../src/namespaces/config.js";
-import { PropertyValue } from "../src/namespaces/envUtils.js";
+import { PropertyValue } from "../src/namespaces/config.js";
 
 describe("Console log test", () => {
   it("Logs console", () => {

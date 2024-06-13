@@ -1,15 +1,11 @@
-
-export type PropertyValue = string|number|boolean|undefined;
-export type PropertyLabel = string;
-//Can't do PropertyObject = {[propertyLabel: propertyLabel]: PropertyValue} as index signatures can only be strings or number, not aliases
-export type PropertyObject = {[propertyLabel: string]: PropertyValue};
+import { PropertyValue } from "./config.js";
 
 /**
  * Value is true if the code is being executed in a browser window
  */
 export const isWindow = !(typeof window === "undefined");
 
-export const getEnvValue = (propertyLabel: PropertyLabel, isWindowOverride = isWindow): PropertyValue => {
+export const getEnvValue = (propertyLabel: string, isWindowOverride = isWindow): PropertyValue => {
   let value: PropertyValue;
   if(isWindowOverride) { //Don't allow reading propertyDefaults or process.env in case we are inWindow
     /* eslint-disable @typescript-eslint/no-explicit-any */
