@@ -1,4 +1,5 @@
 import * as ConfigNm from "./namespaces/config.js";
+import * as envUtils from "./namespaces/envUtils.js";
 import * as jsUtils from "./namespaces/jsUtils.js";
 import * as storageUtils from "./namespaces/storageUtils.js";
 import * as storageUtilsV2 from "./namespaces/storageUtilsV2.js";

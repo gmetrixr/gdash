@@ -16,12 +16,8 @@
  *    this map is used to specify all other properties of that property
  */
 
-import { isWindow, renderTemplate, mapToObject } from "./jsUtils.js";
-
-export type PropertyValue = string|number|boolean|undefined;
-type PropertyLabel = string;
-//Can't do PropertyObject = {[propertyLabel: propertyLabel]: PropertyValue} as index signatures can only be strings or number, not aliases
-export type PropertyObject = {[propertyLabel: string]: PropertyValue};
+import { renderTemplate, mapToObject } from "./jsUtils.js";
+import { isWindow, PropertyObject, PropertyValue, getEnvValue, PropertyLabel } from "./envUtils.js";
 
 /**
  * Check test cases for detailed usage
@@ -112,24 +108,4 @@ export class Config {
     
     return value;
   }
-}
-
-export const getEnvValue = (propertyLabel: PropertyLabel, isWindowOverride = isWindow): PropertyValue => {
-  let value: PropertyValue;
-  if(isWindowOverride) { //Don't allow reading propertyDefaults or process.env in case we are inWindow
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    if((<any>window).windowConfig && propertyLabel in (<any>window).windowConfig) {
-      value = (<any>window).windowConfig[propertyLabel];
-    }
-  } else {
-    if (process && process.env && process.env[propertyLabel]) {
-      value = process.env[propertyLabel];
-      //Convert strings "true" and "false" to booleans (unix shell environment variables don"t support booleans)
-      if(value === "false")
-        value = false;
-      if(value === "true")
-        value = true;
-    }
-  }
-  return value;
 }

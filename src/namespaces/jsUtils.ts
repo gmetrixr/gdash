@@ -1,16 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import mustache from "mustache";
 import clone from "rfdc";
-import { getEnvValue } from "./config.js";
-
-const NAMESPACE = getEnvValue("PUBLIC_NAMESPACE");
-export const IS_LOCAL = NAMESPACE === "local";
-export const IS_PROD = NAMESPACE === "prod";
-
-/**
- * Value is true if the code is being executed in a browser window
- */
-export const isWindow = !(typeof window === "undefined");
 
 /**
  * Used to specify expiry times in a convenient way
