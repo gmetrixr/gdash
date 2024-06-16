@@ -277,7 +277,7 @@ export const getUniqueKebabSlug = (originalName: string, existingNames: string[]
   const nameSeriesExtractorRegex = {
     // *? makes the first part not greedy
     // (?:xxxx)? in the second part after the base makes the second part optional
-    // used to match patterns like Hello_123
+    // used to match patterns like Hello-123
     regex: /^(.*?)(?:-(\d+))?$/, //No space (\s) allowed 
     errorMessage: "no name series found"
   }
@@ -393,11 +393,21 @@ export const getSafeAndUniqueRecordName = (originalName: string, existingNames: 
 }
 
 /**
+ * Ensures only safe characters are used
+ */
+export const getSafeKebabSlug = (originalName: string): string => {
+  return makeNameSafeL3(originalName, "-").toLowerCase();
+}
+
+/**
  * 1. Ensures only safe characters are used
  * 2. Ensures no duplicate names are used
  */
 export const getSafeAndUniqueKebabSlug = (originalName: string, existingNames: string[]): string => {
-  const safeOriginalName = makeNameSafeL3(originalName, "-").toLowerCase();
+  const safeOriginalName = getSafeKebabSlug(originalName);
+  if(existingNames.length === 0) {
+    return safeOriginalName;
+  }
   return getUniqueKebabSlug(safeOriginalName, existingNames);
 }
 
