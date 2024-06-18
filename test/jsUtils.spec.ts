@@ -3,6 +3,7 @@ import { jsUtils } from "../src/index.js";
 import largeJson from "./jsons/largeProject.json";
 const { deepCloneStructured, deepCloneRfdc, deepCloneStringify } = jsUtils;
 import { performance } from "perf_hooks";
+import { sampleSize } from "../src/namespaces/stringUtils.js";
 
 describe("uuid Test", () => {
 
@@ -43,6 +44,13 @@ describe("uuid Test", () => {
   it("should template the string", () => {
     const templatedName = jsUtils.renderTemplate("lorem ipsum {{rep}}", {rep: "dolor"});
     expect(templatedName).toBe("lorem ipsum dolor");
+  });
+
+  it("should select random sample from input array", () => {
+    const inputArray = ["Sahil", "Vivek", "Amit", 1, 2, 3];
+    const randomSample = sampleSize(inputArray, 4);
+    console.log(randomSample);
+    expect(randomSample.length).toBe(4);
   });
 });
 

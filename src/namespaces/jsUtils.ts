@@ -212,3 +212,31 @@ export const deepClone = deepCloneStructured;
  * https://stackoverflow.com/a/11832950
  */
 export const roundToNDigits = (num: number, n: number = 2): number => Math.round(num * 10**n + Number.EPSILON) / 10**n
+
+/** getRandomFromArray */
+export function sample <T>(list: Array<T>): T {
+  return list[Math.floor(Math.random() * list.length)];
+}
+
+/** getRandomArray From Array, no duplicates */
+export function sampleSize <T>(list: Array<T>, n: number): Array<T> {
+  const list2 = [...list];
+  const N = list2.length;
+  for(let i=0; i<n; i++) {
+    const randomIndex = randomBetween(i, N);
+    swapItemsInArray(list2, i, randomIndex);
+  }
+  return list2.slice(0, n);
+}
+
+/** Select a random number between min (inclusive) and max (exclusive) */
+export function randomBetween(min: number, max: number): number {
+  return min + Math.floor(Math.random() * (max - min));
+}
+
+/** Select a random number between min (inclusive) and max (exclusive) */
+export function swapItemsInArray <T>(arr: Array<T>, sourceIndex: number, destinationIndex: number): void {
+  const v = arr[destinationIndex];
+  arr[destinationIndex] = arr[sourceIndex];
+  arr[sourceIndex] = v; 
+}
