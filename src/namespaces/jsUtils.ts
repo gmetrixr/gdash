@@ -215,18 +215,18 @@ export const roundToNDigits = (num: number, n: number = 2): number => Math.round
 
 /** getRandomFromArray */
 export function sample <T>(list: Array<T>): T {
-  return list[Math.floor(Math.random() * list.length)];
+  return list[randomBetween(0, list.length)];
 }
 
 /** getRandomArray From Array, no duplicates */
 export function sampleSize <T>(list: Array<T>, n: number): Array<T> {
-  const list2 = [...list];
-  const N = list2.length;
+  const listCopy = [...list];
+  const N = listCopy.length;
   for(let i=0; i<n; i++) {
     const randomIndex = randomBetween(i, N);
-    swapItemsInArray(list2, i, randomIndex);
+    swapItemsInArray(listCopy, i, randomIndex);
   }
-  return list2.slice(0, n);
+  return listCopy.slice(0, n);
 }
 
 /** Select a random number between min (inclusive) and max (exclusive) */
