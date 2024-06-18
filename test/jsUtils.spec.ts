@@ -3,7 +3,7 @@ import { jsUtils } from "../src/index.js";
 import largeJson from "./jsons/largeProject.json";
 const { deepCloneStructured, deepCloneRfdc, deepCloneStringify } = jsUtils;
 import { performance } from "perf_hooks";
-import { sampleSize } from "../src/namespaces/stringUtils.js";
+import { sampleSize } from "../src/namespaces/jsUtils.js";
 
 describe("uuid Test", () => {
 
