@@ -176,4 +176,8 @@ describe("unique name test", () => {
     const res = stringUtils.getSafeAndUniqueKebabSlug("My First Book", ["my-first-book", "my-first-book-1", "my-second-book", "my-first-book-1-1"]);
     expect(res).toBe("my-first-book-2");
   })
+  it.only("should see if getUTF8SafeKebabSlug works test 1", () => {
+    const res = stringUtils.getUTF8SafeKebabSlug("My First}\\ } Book आपके*()सामने_एक^yu");
+    expect(res).toBe("my-first-book-आपके-सामने_एक-yu");
+  })
 });

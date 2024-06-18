@@ -161,7 +161,9 @@ function makeNameSafe(name = "", regex: RegExp, replacementChar: string): string
 export const safeNameRegexL1 = /[a-zA-Z0-9-_.'()\s,+\[\]:*&<>~]/g; //Project / scene name
 export const safeNameRegexL2 = /[a-zA-Z0-9-_.'()\s,]/g; //Used for file/folder names + variable names
 export const safeNameRegexL3 = /[a-zA-Z0-9_-]/g; //Most strict, used for slugs
-
+//UTF8 characters allowed in the following: https://support.exactonline.com/community/s/knowledge-base#All-All-DNO-Content-urlcharacters
+export const safeNameRegexL4 = /[^()\s,+\[\]:*&<>~"#%{}|\\\/^`:;?@=]/g; //Most strict, used for slugs
+"my-first-book-आपके*()सामने_एक"
 /**
  * Save RegExps that use to .test() strings as strings. 
  * Saving them as RegExp in a central library is risky as RegExp themselves are stateful
@@ -397,6 +399,13 @@ export const getSafeAndUniqueRecordName = (originalName: string, existingNames: 
  */
 export const getSafeKebabSlug = (originalName: string): string => {
   return makeNameSafeL3(originalName, "-").toLowerCase();
+}
+
+/**
+ * Ensures only safe characters are used, also UTF8
+ */
+export const getUTF8SafeKebabSlug = (originalName: string): string => {
+  return makeNameSafe(originalName.trim(), safeNameRegexL4, "-").toLowerCase();
 }
 
 /**
