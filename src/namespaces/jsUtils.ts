@@ -204,7 +204,7 @@ const cloneConfigured = clone({proto: true, circles: false});
 export const deepCloneRfdc = <T>(node: T): T => cloneConfigured(node);
 export const deepCloneStructured = <T>(node: T): T => structuredClone(node);
 
-export const deepClone = deepCloneStructured;
+export const deepClone = deepCloneRfdc;
 
 /**
  * Round num to n digits.
