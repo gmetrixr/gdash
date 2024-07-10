@@ -202,6 +202,7 @@ export const deepCloneStringify = <T>(node: T): T => JSON.parse(JSON.stringify(n
 
 const cloneConfigured = clone({proto: true, circles: false});
 export const deepCloneRfdc = <T>(node: T): T => cloneConfigured(node);
+/** Structured clone doensn't work on proxy objects */
 export const deepCloneStructured = <T>(node: T): T => structuredClone(node);
 
 export const deepClone = deepCloneRfdc;
