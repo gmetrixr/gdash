@@ -158,13 +158,14 @@ function makeNameSafe(name = "", regex: RegExp, replacementChar: string): string
  * 1 -> 3 signifies increasing number of restrictions.
  */
 
+// ! NOT USING /s AS IT MATCHES UNSAFE CHARACTERS LIKE NBSP
 // safe name set according to: https://docs.google.com/document/d/18vQN_rS2zasDKUZ_efwXhxKEukLKRCRoQVqn8tv8g8A/edit#
-export const safeNameRegexL1 = /[a-zA-Z0-9-_.'()\s,+\[\]:*&<>~]/g; //Project / scene name
-export const safeNameRegexL2 = /[a-zA-Z0-9-_.'()\s,]/g; //Used for file/folder names + variable names
+export const safeNameRegexL1 = /[a-zA-Z0-9-_.'() ,+\[\]:*&<>~]/g; //Project / scene name
+export const safeNameRegexL2 = /[a-zA-Z0-9-_.'() ,]/g; //Used for file/folder names + variable names
 export const safeNameRegexL3 = /[a-zA-Z0-9_-]/g; //Most strict, used for slugs
 //UTF8 characters allowed in the following: https://support.exactonline.com/community/s/knowledge-base#All-All-DNO-Content-urlcharacters
-export const safeNameRegexL4 = /[^()\s,+\[\]:*&<>~"#%{}|\\\/^`:;?@=]/g; //Most strict, used for slugs
-"my-first-book-आपके*()सामने_एक"
+export const safeNameRegexL4 = /[^() ,+\[\]:*&<>~"#%{}|\\\/^`:;?@=]/g; //Most strict, used for slugs
+// "my-first-book-आपके*()सामने_एक"
 /**
  * Save RegExps that use to .test() strings as strings. 
  * Saving them as RegExp in a central library is risky as RegExp themselves are stateful
