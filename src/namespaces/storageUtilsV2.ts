@@ -1,50 +1,39 @@
 import Cookies from "js-cookie";
 import { DAY, MINUTE } from "./jsUtils.js";
 
+type CookieOptions = {
+  expiryMinutes?: number
+};
+
 /** 
  * An open function where you can set cookie attributes directly 
+ * Bypasses all our checks/controls
  **/
-export function setCookieWithOptions({ key, value, options }: {key: string, value: string, options: Cookies.CookieAttributes | undefined}) {
+export function setRawCookie({ key, value, options }: {key: string, value: string, options: Cookies.CookieAttributes | undefined}) {
   if(options) {
     return Cookies.set(key, value, options);
   }
   return Cookies.set(key, value);
 }
 
+export function setCookie({ key, value, options, isLongLived }: {key: string, value: string, options: CookieOptions, isLongLived: boolean}) {
+  if(isLongLived) {
+    options.expiryMinutes = DAY * 365 / MINUTE;
+  }
+  return Cookies.set(key, value, createCookieAttributes(options));
+}
+
 function createCookieAttributes (options: CookieOptions): Cookies.CookieAttributes | undefined {
-  const { expiryMinutes, openInEmbeds } = options;
   const cookieAttributes: Cookies.CookieAttributes | undefined = {
-    "secure": true,
+    secure: true,
+    sameSite: "Strict",
+    partitioned: true
   };
+  const { expiryMinutes } = options;
   if(expiryMinutes) {
     cookieAttributes.expires = expiryMinutes / (60 * 24); //"expires" accepts days
   }
-  if(openInEmbeds) {
-    //https://intercom.help/progressier/en/articles/6894845-why-aren-t-cookies-working-inside-an-iframe
-    //Since Chrome 85, a web page that's inside an iframe and that's on a different domain than the parent won't be able to read its own cookies, unless they've explicitly been set using SameSite=None and Secure.
-    //Hence we need sameSite: "None" and secure: true
-    cookieAttributes.sameSite = "None";
-  } else {
-    cookieAttributes.sameSite = "Lax";
-  }
   return cookieAttributes;
-}
-
-type CookieOptions = {
-  expiryMinutes?: number,
-  openInEmbeds?: boolean,
-};
-
-/** Can be used to store user preferences */
-export function setLongLivedCookie({ key, value }: {key: string, value: string}) {
-  return setCookie({key, value, options: {expiryMinutes: DAY * 365 / MINUTE, openInEmbeds: true} });
-}
-
-export function setCookie({ key, value, options }: {key: string, value: string, options: CookieOptions}) {
-  if(options) {
-    return Cookies.set(key, value, createCookieAttributes(options));
-  }
-  return Cookies.set(key, value);
 }
 
 export function getCookie({ key }: { key: string }): (string | undefined) {
