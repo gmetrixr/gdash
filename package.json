@@ -1,6 +1,6 @@
 {
   "name": "@gmetrixr/gdash",
-  "version": "1.3.81",
+  "version": "1.3.82",
   "description": "A GMetri Client (web) utility library",
   "types": "./lib/esm/index.d.ts",
   "exports": {
