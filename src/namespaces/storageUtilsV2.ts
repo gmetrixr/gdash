@@ -26,7 +26,11 @@ export function setCookie({ key, value, options, isLongLived }: {key: string, va
 function createCookieAttributes (options: CookieOptions): Cookies.CookieAttributes | undefined {
   const cookieAttributes: Cookies.CookieAttributes | undefined = {
     secure: true,
-    sameSite: "Strict",
+    //This is needed so that our cookies work when the website is loaded inside iframes
+    //If any one of the sites above loaded any other site from the list in an <iframe> , that content would be loaded cross-site
+    //https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#none
+    //https://web.dev/articles/samesite-cookies-explained
+    sameSite: "None",
     partitioned: true
   };
   const { expiryMinutes } = options;
