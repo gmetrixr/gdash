@@ -241,3 +241,65 @@ export function swapItemsInArray <T>(arr: Array<T>, sourceIndex: number, destina
   arr[destinationIndex] = arr[sourceIndex];
   arr[sourceIndex] = v; 
 }
+
+
+//Copied and modified from https://stackoverflow.com/a/43382807
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/**
+ * Returns the memoized (cached) function.
+ *
+ * Create an empty cache by instantiating a new `Map` object.
+ * Return a function which takes a single argument to be supplied to the memoized function by first checking if the function's output for that specific input value is already cached, or store and return it if not. The `function` keyword must be used in order to allow the memoized function to have its `this` context changed if necessary.
+ * Allow access to the `cache` by setting it as a property on the returned function.
+ *
+ * @param fn {Function}
+ */
+export const asyncMemoize = <R, T extends (...args: any[]) => Promise<R>>(f: T, maxAge?: number): T => {
+  const memory = new Map<string, R>();
+  let setTime = Date.now();
+
+  const g = async (...args: any[]) => {
+    const cacheExpired = (maxAge && (Date.now() - setTime) > maxAge);
+    const cacheHit = memory.get(args.join());
+
+    if(cacheHit !== undefined && !cacheExpired) {
+      return cacheHit
+    } else {
+      const r = await f(...args);
+      memory.set(args.join(), r);
+      setTime = Date.now();
+      return r;
+    }
+  };
+
+  return g as T;
+};
+
+export const syncMemoize = <R, T extends (...args: any[]) => R>(f: T, maxAge?: number): T => {
+  const memory = new Map<string, R>();
+  let setTime = Date.now();
+
+  const g = (...args: any[]) => {
+    const cacheExpired = (maxAge && (Date.now() - setTime) > maxAge);
+    const cacheHit = memory.get(args.join());
+
+    if(cacheHit !== undefined && !cacheExpired) {
+      return cacheHit
+    } else {
+      const r = f(...args);
+      memory.set(args.join(), r);
+      setTime = Date.now();
+      return r;
+    }
+  };
+
+  return g as T;
+};
+/* eslint-enable */
+
+// function square(a: number, b: number) {
+//   return a*b
+// }
+
+// const square2 = syncMemoize(square);
+// const a = square2(2, 3);
