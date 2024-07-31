@@ -245,15 +245,7 @@ export function swapItemsInArray <T>(arr: Array<T>, sourceIndex: number, destina
 
 //Copied and modified from https://stackoverflow.com/a/43382807
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/**
- * Returns the memoized (cached) function.
- *
- * Create an empty cache by instantiating a new `Map` object.
- * Return a function which takes a single argument to be supplied to the memoized function by first checking if the function's output for that specific input value is already cached, or store and return it if not. The `function` keyword must be used in order to allow the memoized function to have its `this` context changed if necessary.
- * Allow access to the `cache` by setting it as a property on the returned function.
- *
- * @param fn {Function}
- */
+/** Returns the memoized (cached) function with ttl, for promises */
 export const asyncMemoize = <R, T extends (...args: any[]) => Promise<R>>(f: T, maxAge?: number): T => {
   const memory = new Map<string, R>();
   let setTime = Date.now();
@@ -275,6 +267,7 @@ export const asyncMemoize = <R, T extends (...args: any[]) => Promise<R>>(f: T, 
   return g as T;
 };
 
+/** Returns the memoized (cached) function with ttl */
 export const syncMemoize = <R, T extends (...args: any[]) => R>(f: T, maxAge?: number): T => {
   const memory = new Map<string, R>();
   let setTime = Date.now();
@@ -295,6 +288,7 @@ export const syncMemoize = <R, T extends (...args: any[]) => R>(f: T, maxAge?: n
 
   return g as T;
 };
+
 /* eslint-enable */
 
 // function square(a: number, b: number) {
