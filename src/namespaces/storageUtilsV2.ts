@@ -45,7 +45,7 @@ export function getCookie({ key }: { key: string }): (string | undefined) {
 }
 
 export function removeCookie({ key }: { key: string }) {
-  Cookies.remove(key);
+  Cookies.remove(key, { secure: true, sameSite: "None", partitioned: true });
 }
 
 /** 
