@@ -245,13 +245,16 @@ export function swapItemsInArray <T>(arr: Array<T>, sourceIndex: number, destina
 
 //Copied and modified from https://stackoverflow.com/a/43382807
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/** Returns the memoized (cached) function with ttl, for promises */
+/** 
+ * Returns the memoized (cached) function with ttl, for promises 
+ * maxAge should be in milliseconds
+ **/
 export const asyncMemoize = <R, T extends (...args: any[]) => Promise<R>>(f: T, maxAge?: number): T => {
   const memory = new Map<string, R>();
   let setTime = Date.now();
 
   const g = async (...args: any[]) => {
-    const cacheExpired = (maxAge && (Date.now() - setTime) > maxAge);
+    const cacheExpired = (maxAge !== undefined) && ((Date.now() - setTime) > maxAge);
     const cacheHit = memory.get(args.join());
 
     if(cacheHit !== undefined && !cacheExpired) {
@@ -267,13 +270,16 @@ export const asyncMemoize = <R, T extends (...args: any[]) => Promise<R>>(f: T, 
   return g as T;
 };
 
-/** Returns the memoized (cached) function with ttl */
+/** 
+ * Returns the memoized (cached) function with ttl
+ * maxAge should be in milliseconds
+ */
 export const syncMemoize = <R, T extends (...args: any[]) => R>(f: T, maxAge?: number): T => {
   const memory = new Map<string, R>();
   let setTime = Date.now();
 
   const g = (...args: any[]) => {
-    const cacheExpired = (maxAge && (Date.now() - setTime) > maxAge);
+    const cacheExpired = (maxAge !== undefined) && ((Date.now() - setTime) > maxAge);
     const cacheHit = memory.get(args.join());
 
     if(cacheHit !== undefined && !cacheExpired) {
