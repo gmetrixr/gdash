@@ -1,5 +1,5 @@
 import { cryptoUtils } from "../src/index.js";
-import { expect, describe, xdescribe, beforeAll, afterAll, it, xit, afterEach } from "@jest/globals";
+import { expect, describe, beforeAll, afterAll, it, afterEach } from "vitest";
 import { str2ab } from "../src/namespaces/crypto/RSA.js";
 
 describe("cryptoUtitls rsa encrypt/decrypt test", () => {
@@ -19,17 +19,16 @@ describe("cryptoUtitls rsa encrypt/decrypt test", () => {
     console.log("Decrypted Value:", dec);
     expect(dec).toEqual(value);
   });
-});
 
-describe("Find bytelength of string", () => {
-  const STRING1 = "a👅😃";
-  const STRING2 = "abcdefghijklmnopqrstuvwxyz/!@#$%^%ABCDEF";
-  const ab1 = str2ab(STRING1);
-  const ab2 = str2ab(STRING2);
-  expect(ab1.byteLength).toEqual(5); //Crazy characters take more bytes 😛
-  expect(ab2.byteLength).toEqual(40);
+  it("Find bytelength of string", () => {
+    const STRING1 = "a👅😃";
+    const STRING2 = "abcdefghijklmnopqrstuvwxyz/!@#$%^%ABCDEF";
+    const ab1 = str2ab(STRING1);
+    const ab2 = str2ab(STRING2);
+    expect(ab1.byteLength).toEqual(5); //Crazy characters take more bytes 😛
+    expect(ab2.byteLength).toEqual(40);
+  });
 });
-
 
 // describe("cryptoUtitls AES encrypt/decrypt test", () => {
 //   it("encrypt and decrypt correctly", async () => {

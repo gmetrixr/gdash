@@ -1,4 +1,4 @@
-import { expect, describe, xdescribe, beforeAll, afterAll, it, xit, afterEach } from "@jest/globals";
+import { expect, describe, beforeAll, afterAll, it, afterEach } from "vitest";
 import { Config } from "../src/namespaces/config.js";
 import { PropertyValue } from "../src/namespaces/config.js";
 

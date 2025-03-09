@@ -1,5 +1,5 @@
 import { stringUtils } from "../src/index.js";
-import { expect, describe, xdescribe, beforeAll, afterAll, it, xit, afterEach } from "@jest/globals";
+import { expect, describe, beforeAll, afterAll, it, afterEach } from "vitest";
 
 describe("stringUtils test", () => {
   it("should correct unsafe names for project/scene/element names", () => {

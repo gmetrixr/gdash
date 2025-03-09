@@ -1,4 +1,4 @@
-import { expect, describe, xdescribe, beforeAll, afterAll, it, xit, afterEach } from "@jest/globals";
+import { expect, describe, beforeAll, afterAll, it, afterEach } from "vitest";
 import { jsUtils } from "../src/index.js";
 import largeJson from "./jsons/largeProject.json";
 const { deepCloneStructured, deepCloneRfdc, deepCloneStringify } = jsUtils;

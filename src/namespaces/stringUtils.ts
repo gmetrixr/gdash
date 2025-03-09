@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-escape */
+
 import { sample } from "./jsUtils.js";
 
 export const generateAWSFileName = (fileName: string): string => {

@@ -1,4 +1,4 @@
-import { expect, describe, xdescribe, beforeAll, afterAll, it, xit, afterEach } from "@jest/globals";
+import { expect, describe, beforeAll, afterAll, it, afterEach } from "vitest";
 import { pathUtils } from "../src/index.js";
 
 describe("jsutils test", () => {

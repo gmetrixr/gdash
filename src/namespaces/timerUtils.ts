@@ -8,6 +8,7 @@ function setUseWorkerTimer(use: boolean) {
   worker = use;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 function customSetInterval(func: Function, timeout: number): number {
   return ((worker && isWindow) ? wt.setInterval(func, timeout) : global.setInterval(func, timeout));
 }
@@ -16,6 +17,7 @@ function customClearInterval(timerId: number): void {
   return ((worker && isWindow) ? wt.clearInterval(timerId) : global.clearInterval(timerId));
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 function customSetTimeout(func: Function, delay: number): number {
   return ((worker && isWindow) ? wt.setTimeout(func, delay) : global.setTimeout(func, delay));
 }
